@@ -178,12 +178,7 @@ const Index = () => {
           <Mail size={32} className="mx-auto text-primary mb-4" />
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-3">Stay Connected</h2>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">Get faith-based counseling tips, event updates, and resources delivered to your inbox.</p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Your email address" className="flex-1 px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
-            <button type="submit" className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity">
-              Subscribe
-            </button>
-          </form>
+          <NewsletterForm />
         </div>
       </section>
 
