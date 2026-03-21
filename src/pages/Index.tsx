@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Heart, Users, Brain, BookOpen, Shield, Sparkles, ArrowRight, ChevronDown, Mail } from "lucide-react";
