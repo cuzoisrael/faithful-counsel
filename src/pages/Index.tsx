@@ -66,6 +66,7 @@ const NewsletterForm = () => {
 };
 
 const Index = () => {
+  return (
     <Layout>
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
