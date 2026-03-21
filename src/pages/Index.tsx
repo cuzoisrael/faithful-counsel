@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Heart, Users, Brain, BookOpen, Shield, Sparkles, ArrowRight, ChevronDown, Mail } from "lucide-react";
@@ -6,6 +7,8 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import ServiceCard from "@/components/shared/ServiceCard";
 import TestimonialCard from "@/components/shared/TestimonialCard";
 import CTASection from "@/components/shared/CTASection";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const fadeUp = {
@@ -34,6 +37,33 @@ const faqs = [
   { q: "Can I book sessions online?", a: "Absolutely. We offer both online and in-person sessions for your convenience." },
   { q: "How much do sessions cost?", a: "Our pricing varies by service. Individual sessions start from $70. Visit our Services page for detailed pricing." },
 ];
+
+const NewsletterForm = () => {
+  const [nlEmail, setNlEmail] = useState("");
+  const [nlLoading, setNlLoading] = useState(false);
+  const handleNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nlEmail) return;
+    setNlLoading(true);
+    const { error } = await supabase.from("newsletter_subscribers").insert({ email: nlEmail });
+    setNlLoading(false);
+    if (error) {
+      if (error.code === "23505") toast.info("You're already subscribed!");
+      else toast.error("Something went wrong.");
+    } else {
+      toast.success("You're subscribed! Welcome to the IACPD community.");
+      setNlEmail("");
+    }
+  };
+  return (
+    <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={handleNewsletter}>
+      <input type="email" required value={nlEmail} onChange={(e) => setNlEmail(e.target.value)} placeholder="Your email address" className="flex-1 px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+      <button type="submit" disabled={nlLoading} className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50">
+        {nlLoading ? "..." : "Subscribe"}
+      </button>
+    </form>
+  );
+};
 
 const Index = () => {
   return (
@@ -175,12 +205,7 @@ const Index = () => {
           <Mail size={32} className="mx-auto text-primary mb-4" />
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-3">Stay Connected</h2>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">Get faith-based counseling tips, event updates, and resources delivered to your inbox.</p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Your email address" className="flex-1 px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
-            <button type="submit" className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity">
-              Subscribe
-            </button>
-          </form>
+          <NewsletterForm />
         </div>
       </section>
 

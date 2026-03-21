@@ -1,32 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import SectionHeading from "@/components/shared/SectionHeading";
 import TestimonialCard from "@/components/shared/TestimonialCard";
 import CTASection from "@/components/shared/CTASection";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const categories = ["All", "Individual", "Couple", "Trainee", "Leader"];
 
-const testimonials = [
-  { name: "Grace Okonkwo", role: "Couple", text: "IACPD saved our marriage. The faith-based approach helped us find healing we never thought possible. Our counselor truly listened and guided us with wisdom and patience.", rating: 5, featured: true },
-  { name: "David Mensah", role: "Leader", text: "The leadership development program transformed my approach to leading my team. I now lead with purpose, clarity, and conviction.", rating: 5 },
-  { name: "Amara Nwosu", role: "Individual", text: "After years of struggling with anxiety, the counseling sessions gave me tools grounded in faith and psychology to finally find peace and direction.", rating: 5, featured: true },
-  { name: "Samuel Adekunle", role: "Trainee", text: "The counseling certification program was rigorous, practical, and deeply transformative. I now feel equipped to serve others with excellence.", rating: 5 },
-  { name: "Blessing Eze", role: "Individual", text: "I walked in broken and walked out renewed. The care and professionalism of the counselors made all the difference in my healing journey.", rating: 4 },
-  { name: "Chidinma Obi", role: "Couple", text: "Pre-marital counseling with IACPD prepared us for marriage in ways we didn't even know we needed. We're stronger for it.", rating: 5 },
-  { name: "Francis Nwankwo", role: "Leader", text: "As a pastor, the leadership coaching helped me understand my blind spots and grow into a more effective, compassionate leader.", rating: 5 },
-  { name: "Yetunde Bakare", role: "Individual", text: "The faith-based approach to mental health counseling changed my perspective. I found hope again through this incredible team.", rating: 5 },
+// Fallback testimonials for when DB is empty
+const fallbackTestimonials = [
+  { id: "f1", full_name: "Grace Okonkwo", role: "Couple", testimonial_text: "IACPD saved our marriage. The faith-based approach helped us find healing we never thought possible.", rating: 5, featured: true, image_url: null },
+  { id: "f2", full_name: "David Mensah", role: "Leader", testimonial_text: "The leadership development program transformed my approach to leading my team.", rating: 5, featured: false, image_url: null },
+  { id: "f3", full_name: "Amara Nwosu", role: "Individual", testimonial_text: "After years of struggling with anxiety, the counseling sessions gave me tools grounded in faith and psychology to finally find peace.", rating: 5, featured: true, image_url: null },
+  { id: "f4", full_name: "Samuel Adekunle", role: "Trainee", testimonial_text: "The counseling certification program was rigorous, practical, and deeply transformative.", rating: 5, featured: false, image_url: null },
+  { id: "f5", full_name: "Blessing Eze", role: "Individual", testimonial_text: "I walked in broken and walked out renewed. The care and professionalism made all the difference.", rating: 4, featured: false, image_url: null },
+  { id: "f6", full_name: "Chidinma Obi", role: "Couple", testimonial_text: "Pre-marital counseling with IACPD prepared us for marriage in ways we didn't even know we needed.", rating: 5, featured: false, image_url: null },
 ];
 
 const Testimonials = () => {
   const [filter, setFilter] = useState("All");
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      const { data } = await supabase.from("testimonials").select("*").eq("status", "approved").order("created_at", { ascending: false });
+      if (data && data.length > 0) {
+        setTestimonials(data.map((t) => ({ ...t, id: t.id })));
+      }
+    };
+    fetchTestimonials();
+  }, []);
 
   const filtered = filter === "All" ? testimonials : testimonials.filter((t) => t.role === filter);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast.success("Thank you! Your testimonial has been submitted for review.");
-    (e.target as HTMLFormElement).reset();
+    setLoading(true);
+    const form = e.target as HTMLFormElement;
+    const fd = new FormData(form);
+
+    const { error } = await supabase.from("testimonials").insert({
+      full_name: fd.get("full_name") as string,
+      role: fd.get("role") as string,
+      testimonial_text: fd.get("testimonial_text") as string,
+      rating: parseInt(fd.get("rating") as string) || 5,
+    });
+
+    setLoading(false);
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+    } else {
+      toast.success("Thank you! Your testimonial has been submitted for review.");
+      form.reset();
+    }
   };
 
   return (
@@ -38,29 +66,23 @@ const Testimonials = () => {
         </div>
       </section>
 
-      {/* Filter */}
       <section className="section-padding bg-background">
         <div className="container-wide mx-auto">
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${filter === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}
-              >
+              <button key={cat} onClick={() => setFilter(cat)} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${filter === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>
                 {cat}
               </button>
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((t) => (
-              <TestimonialCard key={t.name} {...t} />
+              <TestimonialCard key={t.id} name={t.full_name} role={t.role} text={t.testimonial_text} rating={t.rating} image={t.image_url || undefined} featured={t.featured} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Submit Testimonial */}
       <section className="section-padding bg-secondary">
         <div className="container-narrow mx-auto">
           <SectionHeading label="Share Your Story" title="Submit a Testimonial" description="Your experience can inspire others. Share how IACPD has impacted your life." />
@@ -68,11 +90,11 @@ const Testimonials = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Full Name *</label>
-                <input required type="text" maxLength={100} className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Your name" />
+                <input required name="full_name" type="text" maxLength={100} className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Your name" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Category *</label>
-                <select required className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+                <select required name="role" className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring">
                   <option value="">Select category</option>
                   <option value="Individual">Individual</option>
                   <option value="Couple">Couple</option>
@@ -82,19 +104,15 @@ const Testimonials = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Rating *</label>
-                <select required className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+                <select required name="rating" className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring">
                   <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
                   <option value="4">⭐⭐⭐⭐ (4 stars)</option>
                   <option value="3">⭐⭐⭐ (3 stars)</option>
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1.5">Photo (optional)</label>
-                <input type="file" accept="image/*" className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm" />
-              </div>
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-foreground mb-1.5">Your Testimonial *</label>
-                <textarea required rows={4} maxLength={1000} className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Share your experience with IACPD..." />
+                <textarea required name="testimonial_text" rows={4} maxLength={1000} className="w-full px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Share your experience with IACPD..." />
               </div>
               <div className="md:col-span-2">
                 <label className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -103,8 +121,8 @@ const Testimonials = () => {
                 </label>
               </div>
             </div>
-            <button type="submit" className="mt-6 w-full px-8 py-4 rounded-lg bg-accent text-accent-foreground font-semibold hover:opacity-90 transition-opacity">
-              Submit Testimonial
+            <button type="submit" disabled={loading} className="mt-6 w-full px-8 py-4 rounded-lg bg-accent text-accent-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50">
+              {loading ? "Submitting..." : "Submit Testimonial"}
             </button>
           </form>
         </div>

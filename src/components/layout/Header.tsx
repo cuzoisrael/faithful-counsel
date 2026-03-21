@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, User, LogOut } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 import logoIcon from "@/assets/logo-icon.png";
 
 const navLinks = [
@@ -15,7 +17,16 @@ const navLinks = [
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    setUserMenuOpen(false);
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border shadow-soft">
@@ -43,13 +54,41 @@ const Header = () => {
               {link.label}
             </Link>
           ))}
+        </nav>
+
+        <div className="hidden lg:flex items-center gap-3">
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+              >
+                <User size={18} />
+                <span className="max-w-[120px] truncate">{user.user_metadata?.full_name || user.email}</span>
+              </button>
+              {userMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-card rounded-lg border border-border shadow-elevated py-1 z-50">
+                  <Link to="/my-bookings" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
+                    My Bookings
+                  </Link>
+                  <button onClick={handleSignOut} className="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-secondary transition-colors flex items-center gap-2">
+                    <LogOut size={14} /> Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/auth" className="px-4 py-2 rounded-md text-sm font-medium text-foreground hover:bg-secondary transition-colors">
+              Sign In
+            </Link>
+          )}
           <Link
             to="/bookings"
-            className="ml-3 px-5 py-2.5 rounded-lg bg-accent text-accent-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
+            className="px-5 py-2.5 rounded-lg bg-accent text-accent-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
           >
             Book a Session
           </Link>
-        </nav>
+        </div>
 
         {/* Mobile toggle */}
         <button
@@ -61,32 +100,56 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile nav */}
-      {mobileOpen && (
-        <nav className="lg:hidden border-t border-border bg-card px-4 py-4 space-y-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setMobileOpen(false)}
-              className={`block px-4 py-3 rounded-md text-sm font-medium transition-colors ${
-                location.pathname === link.path
-                  ? "bg-primary text-primary-foreground"
-                  : "text-foreground hover:bg-secondary"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            to="/bookings"
-            onClick={() => setMobileOpen(false)}
-            className="block mt-3 px-4 py-3 rounded-lg bg-accent text-accent-foreground font-semibold text-sm text-center"
+      {/* Mobile nav with animation */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="lg:hidden border-t border-border bg-card overflow-hidden"
           >
-            Book a Session
-          </Link>
-        </nav>
-      )}
+            <div className="px-4 py-4 space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block px-4 py-3 rounded-md text-sm font-medium transition-colors ${
+                    location.pathname === link.path
+                      ? "bg-primary text-primary-foreground"
+                      : "text-foreground hover:bg-secondary"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              {user ? (
+                <>
+                  <Link to="/my-bookings" onClick={() => setMobileOpen(false)} className="block px-4 py-3 rounded-md text-sm font-medium text-foreground hover:bg-secondary">
+                    My Bookings
+                  </Link>
+                  <button onClick={() => { handleSignOut(); setMobileOpen(false); }} className="block w-full text-left px-4 py-3 rounded-md text-sm font-medium text-destructive hover:bg-secondary">
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Link to="/auth" onClick={() => setMobileOpen(false)} className="block px-4 py-3 rounded-md text-sm font-medium text-foreground hover:bg-secondary">
+                  Sign In
+                </Link>
+              )}
+              <Link
+                to="/bookings"
+                onClick={() => setMobileOpen(false)}
+                className="block mt-3 px-4 py-3 rounded-lg bg-accent text-accent-foreground font-semibold text-sm text-center"
+              >
+                Book a Session
+              </Link>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
