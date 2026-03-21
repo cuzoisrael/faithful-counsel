@@ -38,8 +38,34 @@ const faqs = [
   { q: "How much do sessions cost?", a: "Our pricing varies by service. Individual sessions start from $70. Visit our Services page for detailed pricing." },
 ];
 
-const Index = () => {
+const NewsletterForm = () => {
+  const [nlEmail, setNlEmail] = useState("");
+  const [nlLoading, setNlLoading] = useState(false);
+  const handleNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nlEmail) return;
+    setNlLoading(true);
+    const { error } = await supabase.from("newsletter_subscribers").insert({ email: nlEmail });
+    setNlLoading(false);
+    if (error) {
+      if (error.code === "23505") toast.info("You're already subscribed!");
+      else toast.error("Something went wrong.");
+    } else {
+      toast.success("You're subscribed! Welcome to the IACPD community.");
+      setNlEmail("");
+    }
+  };
   return (
+    <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={handleNewsletter}>
+      <input type="email" required value={nlEmail} onChange={(e) => setNlEmail(e.target.value)} placeholder="Your email address" className="flex-1 px-4 py-3 rounded-lg border border-input bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+      <button type="submit" disabled={nlLoading} className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50">
+        {nlLoading ? "..." : "Subscribe"}
+      </button>
+    </form>
+  );
+};
+
+const Index = () => {
     <Layout>
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
