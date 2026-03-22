@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, CalendarCheck, MessageSquare, FileText, Star, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, CalendarCheck, MessageSquare, FileText, Star, LogOut, Menu, X, Users, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
 const sidebarLinks = [
   { label: "Overview", path: "/admin", icon: LayoutDashboard },
   { label: "Bookings", path: "/admin/bookings", icon: CalendarCheck },
+  { label: "Conferences", path: "/admin/conferences", icon: Users },
   { label: "Testimonials", path: "/admin/testimonials", icon: Star },
   { label: "Blog Posts", path: "/admin/blog", icon: FileText },
   { label: "Messages", path: "/admin/messages", icon: MessageSquare },
+  { label: "Newsletter", path: "/admin/newsletter", icon: Mail },
 ];
 
 const AdminDashboard = () => {
