@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Calendar, User, Search } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import CTASection from "@/components/shared/CTASection";
