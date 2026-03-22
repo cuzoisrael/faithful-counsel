@@ -71,6 +71,9 @@ const Header = () => {
                   <Link to="/my-bookings" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
                     My Bookings
                   </Link>
+                  <Link to="/admin" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
+                    Admin Panel
+                  </Link>
                   <button onClick={handleSignOut} className="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-secondary transition-colors flex items-center gap-2">
                     <LogOut size={14} /> Sign Out
                   </button>
