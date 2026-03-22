@@ -96,7 +96,7 @@ const Blog = () => {
                       <span className="flex items-center gap-1"><User size={12} /> {post.author}</span>
                       <span className="flex items-center gap-1"><Calendar size={12} /> {new Date(post.created_at).toLocaleDateString()}</span>
                     </div>
-                    <span className="text-sm font-semibold text-primary cursor-pointer hover:text-primary/80 transition-colors">Read →</span>
+                    <Link to={`/blog/${post.slug}`} className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">Read →</Link>
                   </div>
                 </div>
               </article>
