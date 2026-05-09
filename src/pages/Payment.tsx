@@ -56,10 +56,9 @@ const Payment = () => {
       <section className="bg-secondary/30 py-16">
         <div className="container mx-auto px-4">
           <SectionHeading
-            eyebrow="Payment"
+            label="Payment"
             title="Complete Your Payment"
             description="Thank you for your booking. Use the details below to finalize your payment."
-            centered
           />
 
           <div className="max-w-2xl mx-auto mt-10 space-y-6">
