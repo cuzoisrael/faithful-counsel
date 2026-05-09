@@ -9,7 +9,7 @@ import TestimonialCard from "@/components/shared/TestimonialCard";
 import CTASection from "@/components/shared/CTASection";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import heroBg from "@/assets/hero-bg.jpg";
+import HeroSlideshow from "@/components/shared/HeroSlideshow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -70,10 +70,7 @@ const Index = () => {
     <Layout>
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/60 to-foreground/30" />
-        </div>
+        <HeroSlideshow />
         <div className="relative z-10 container-wide mx-auto px-4 md:px-8 py-20">
           <motion.div initial="hidden" animate="visible" className="max-w-2xl">
             <motion.span variants={fadeUp} custom={0} className="inline-block px-4 py-1.5 rounded-full bg-accent/20 text-accent text-xs font-semibold uppercase tracking-widest mb-6">
