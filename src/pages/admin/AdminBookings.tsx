@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Download } from "lucide-react";
+import { downloadCSV } from "@/lib/csv";
 
 interface Booking {
   id: string;
