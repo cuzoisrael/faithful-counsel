@@ -340,7 +340,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      counselors_public: {
+        Row: {
+          active: boolean | null
+          bio: string | null
+          created_at: string | null
+          display_order: number | null
+          id: string | null
+          image_url: string | null
+          name: string | null
+          specialties: string[] | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          bio?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          image_url?: string | null
+          name?: string | null
+          specialties?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          bio?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          image_url?: string | null
+          name?: string | null
+          specialties?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
