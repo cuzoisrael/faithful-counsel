@@ -23,6 +23,8 @@ import AdminBlog from "./pages/admin/AdminBlog";
 import AdminMessages from "./pages/admin/AdminMessages";
 import AdminConferences from "./pages/admin/AdminConferences";
 import AdminNewsletter from "./pages/admin/AdminNewsletter";
+import AdminCounselors from "./pages/admin/AdminCounselors";
+import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
