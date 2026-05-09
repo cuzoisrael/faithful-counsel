@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Download } from "lucide-react";
+import { downloadCSV } from "@/lib/csv";
 
 interface Booking {
   id: string;
@@ -47,7 +49,12 @@ const AdminBookings = () => {
 
   return (
     <div>
-      <h1 className="font-heading text-2xl font-bold text-foreground mb-6">Manage Bookings</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="font-heading text-2xl font-bold text-foreground">Manage Bookings</h1>
+        <button onClick={() => downloadCSV(`bookings-${new Date().toISOString().split("T")[0]}.csv`, bookings)} disabled={!bookings.length} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50">
+          <Download size={16} /> Export CSV
+        </button>
+      </div>
       <div className="bg-card rounded-xl border border-border overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-secondary">

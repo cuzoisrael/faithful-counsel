@@ -191,6 +191,51 @@ export type Database = {
         }
         Relationships: []
       }
+      counselors: {
+        Row: {
+          active: boolean
+          bio: string | null
+          created_at: string
+          display_order: number
+          email: string | null
+          id: string
+          image_url: string | null
+          name: string
+          phone: string | null
+          specialties: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          bio?: string | null
+          created_at?: string
+          display_order?: number
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          phone?: string | null
+          specialties?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          bio?: string | null
+          created_at?: string
+          display_order?: number
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          phone?: string | null
+          specialties?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string

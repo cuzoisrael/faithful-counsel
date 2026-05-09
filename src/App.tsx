@@ -23,6 +23,8 @@ import AdminBlog from "./pages/admin/AdminBlog";
 import AdminMessages from "./pages/admin/AdminMessages";
 import AdminConferences from "./pages/admin/AdminConferences";
 import AdminNewsletter from "./pages/admin/AdminNewsletter";
+import AdminCounselors from "./pages/admin/AdminCounselors";
+import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,10 +48,12 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/my-bookings" element={<MyBookings />} />
+              <Route path="/payment" element={<Payment />} />
               <Route path="/admin" element={<AdminDashboard />}>
                 <Route index element={<AdminOverview />} />
                 <Route path="bookings" element={<AdminBookings />} />
                 <Route path="conferences" element={<AdminConferences />} />
+                <Route path="counselors" element={<AdminCounselors />} />
                 <Route path="testimonials" element={<AdminTestimonials />} />
                 <Route path="blog" element={<AdminBlog />} />
                 <Route path="messages" element={<AdminMessages />} />

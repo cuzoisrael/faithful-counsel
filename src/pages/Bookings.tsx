@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/layout/Layout";
@@ -27,6 +28,7 @@ const Bookings = () => {
   const [activeTab, setActiveTab] = useState<"session" | "conference">("session");
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,8 +53,9 @@ const Bookings = () => {
     if (error) {
       toast.error("Something went wrong. Please try again.");
     } else {
-      toast.success("Your booking has been submitted! We will confirm your session shortly.");
+      toast.success("Your booking has been submitted! Continue to payment.");
       form.reset();
+      navigate("/payment", { state: { fromBooking: "session" } });
     }
   };
 
@@ -77,8 +80,9 @@ const Bookings = () => {
     if (error) {
       toast.error("Something went wrong. Please try again.");
     } else {
-      toast.success("Registration submitted successfully!");
+      toast.success("Registration submitted successfully! Continue to payment.");
       form.reset();
+      navigate("/payment", { state: { fromBooking: "conference" } });
     }
   };
 
