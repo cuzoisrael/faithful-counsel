@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Download } from "lucide-react";
+import { downloadCSV } from "@/lib/csv";
 
 interface Subscriber {
   id: string;
