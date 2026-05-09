@@ -28,7 +28,12 @@ const AdminNewsletter = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-heading text-2xl font-bold text-foreground">Newsletter Subscribers</h1>
-        <span className="text-sm text-muted-foreground">{items.length} subscriber{items.length !== 1 ? "s" : ""}</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-muted-foreground">{items.length} subscriber{items.length !== 1 ? "s" : ""}</span>
+          <button onClick={() => downloadCSV(`newsletter-${new Date().toISOString().split("T")[0]}.csv`, items)} disabled={!items.length} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50">
+            <Download size={16} /> Export CSV
+          </button>
+        </div>
       </div>
       <div className="bg-card rounded-xl border border-border overflow-x-auto">
         <table className="w-full text-sm">
