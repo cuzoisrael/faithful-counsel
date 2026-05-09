@@ -9,7 +9,7 @@ import TestimonialCard from "@/components/shared/TestimonialCard";
 import CTASection from "@/components/shared/CTASection";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import heroBg from "@/assets/hero-bg.jpg";
+import HeroSlideshow from "@/components/shared/HeroSlideshow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
