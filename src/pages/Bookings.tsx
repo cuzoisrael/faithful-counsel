@@ -28,6 +28,7 @@ const Bookings = () => {
   const [activeTab, setActiveTab] = useState<"session" | "conference">("session");
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
