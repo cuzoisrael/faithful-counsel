@@ -53,8 +53,9 @@ const Bookings = () => {
     if (error) {
       toast.error("Something went wrong. Please try again.");
     } else {
-      toast.success("Your booking has been submitted! We will confirm your session shortly.");
+      toast.success("Your booking has been submitted! Continue to payment.");
       form.reset();
+      navigate("/payment", { state: { fromBooking: "session" } });
     }
   };
 
