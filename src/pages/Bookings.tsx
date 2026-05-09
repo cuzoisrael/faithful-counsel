@@ -80,8 +80,9 @@ const Bookings = () => {
     if (error) {
       toast.error("Something went wrong. Please try again.");
     } else {
-      toast.success("Registration submitted successfully!");
+      toast.success("Registration submitted successfully! Continue to payment.");
       form.reset();
+      navigate("/payment", { state: { fromBooking: "conference" } });
     }
   };
 
