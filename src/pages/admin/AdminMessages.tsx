@@ -35,7 +35,12 @@ const AdminMessages = () => {
 
   return (
     <div>
-      <h1 className="font-heading text-2xl font-bold text-foreground mb-6">Contact Messages</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="font-heading text-2xl font-bold text-foreground">Contact Messages</h1>
+        <button onClick={() => downloadCSV(`messages-${new Date().toISOString().split("T")[0]}.csv`, messages)} disabled={!messages.length} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50">
+          <Download size={16} /> Export CSV
+        </button>
+      </div>
       <div className="space-y-3">
         {messages.map((m) => (
           <div key={m.id} className={`bg-card rounded-xl border border-border p-5 cursor-pointer transition-colors ${!m.read ? "border-l-4 border-l-primary" : ""}`} onClick={() => setExpanded(expanded === m.id ? null : m.id)}>
