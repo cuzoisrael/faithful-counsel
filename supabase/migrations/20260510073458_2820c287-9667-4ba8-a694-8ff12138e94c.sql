@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.grant_admin_for_super_admins() FROM PUBLIC, anon, authenticated;
