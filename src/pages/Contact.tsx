@@ -50,11 +50,11 @@ const Contact = () => {
               <p className="text-muted-foreground leading-relaxed">Whether you have questions about our services, want to book a session, or need more information, we're here to help.</p>
               <div className="space-y-5">
                 {[
-                  { icon: Mail, label: "Email", value: "info@iacpd.org" },
-                  { icon: Phone, label: "Phone", value: "+1 (800) 000-0000" },
-                  { icon: MapPin, label: "Address", value: "Lagos, Nigeria" },
+                  { icon: Mail, label: "Email", value: "teachersteve75@gmail.com" },
+                  { icon: Phone, label: "Phone", value: "+44 7448 519299" },
+                  { icon: MapPin, label: "Address", value: "27 Clovelly Drive, Hampton Gardens\nPeterborough, PE7 8PZ, United Kingdom" },
                   { icon: Clock, label: "Office Hours", value: "Mon–Fri: 9:00 AM – 5:00 PM\nSat: 10:00 AM – 2:00 PM" },
-                  { icon: MessageCircle, label: "WhatsApp", value: "+234 000 000 0000" },
+                  { icon: MessageCircle, label: "WhatsApp", value: "+44 7448 519299" },
                 ].map((item) => (
                   <div key={item.label} className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">

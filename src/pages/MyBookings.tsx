@@ -75,6 +75,7 @@ const MyBookings = () => {
               {bookings.map((booking) => {
                 const statusInfo = statusConfig[booking.status] || statusConfig.pending;
                 const StatusIcon = statusInfo.icon;
+                const intakeReady = ["confirmed", "completed"].includes(booking.status);
                 return (
                   <div key={booking.id} className="bg-card rounded-xl border border-border p-5 card-hover">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -87,9 +88,19 @@ const MyBookings = () => {
                           {booking.preferred_counselor && <span>with {booking.preferred_counselor}</span>}
                         </div>
                       </div>
-                      <div className={`flex items-center gap-1.5 text-sm font-semibold ${statusInfo.color}`}>
-                        <StatusIcon size={16} />
-                        {statusInfo.label}
+                      <div className="flex flex-col items-end gap-2">
+                        <div className={`flex items-center gap-1.5 text-sm font-semibold ${statusInfo.color}`}>
+                          <StatusIcon size={16} />
+                          {statusInfo.label}
+                        </div>
+                        {intakeReady && (
+                          <Link
+                            to={`/intake/${booking.id}`}
+                            className="text-xs font-semibold text-primary hover:underline"
+                          >
+                            Complete intake form →
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>

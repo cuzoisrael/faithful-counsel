@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/layout/Layout";
@@ -29,6 +29,8 @@ const Bookings = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const preselectedCounselor = searchParams.get("counselor") || "";
 
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -141,8 +143,11 @@ const Bookings = () => {
                 </div>
                 <div>
                   <label className={labelClass}>Preferred Counselor</label>
-                  <select name="preferred_counselor" className={inputClass}>
+                  <select name="preferred_counselor" defaultValue={preselectedCounselor} className={inputClass}>
                     <option value="">Select counselor</option>
+                    {(preselectedCounselor && !counselors.includes(preselectedCounselor)) && (
+                      <option value={preselectedCounselor}>{preselectedCounselor}</option>
+                    )}
                     {counselors.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
