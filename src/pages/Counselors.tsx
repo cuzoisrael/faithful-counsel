@@ -26,7 +26,7 @@ const Counselors = () => {
         .from("counselors_public" as any)
         .select("id, name, title, bio, image_url, specialties, years_experience, credentials")
         .order("display_order", { ascending: true });
-      setCounselors((data as Counselor[]) || []);
+      setCounselors(((data as unknown) as Counselor[]) || []);
       setLoading(false);
     })();
   }, []);
