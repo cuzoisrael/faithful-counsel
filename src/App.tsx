@@ -25,6 +25,10 @@ import AdminConferences from "./pages/admin/AdminConferences";
 import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import AdminCounselors from "./pages/admin/AdminCounselors";
 import Payment from "./pages/Payment";
+import Resources from "./pages/Resources";
+import Counselors from "./pages/Counselors";
+import IntakeForm from "./pages/IntakeForm";
+import AdminAccess from "./pages/AdminAccess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +53,10 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/my-bookings" element={<MyBookings />} />
               <Route path="/payment" element={<Payment />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/counselors" element={<Counselors />} />
+              <Route path="/intake/:bookingId" element={<IntakeForm />} />
+              <Route path="/admin-access" element={<AdminAccess />} />
               <Route path="/admin" element={<AdminDashboard />}>
                 <Route index element={<AdminOverview />} />
                 <Route path="bookings" element={<AdminBookings />} />
