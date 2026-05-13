@@ -49,9 +49,10 @@ const Footer = () => {
                 { label: "Home", path: "/" },
                 { label: "About Us", path: "/about" },
                 { label: "Services", path: "/services" },
+                { label: "Counselors", path: "/counselors" },
                 { label: "Bookings", path: "/bookings" },
-                { label: "Testimonials", path: "/testimonials" },
-                { label: "Blog & Resources", path: "/blog" },
+                { label: "Resources", path: "/resources" },
+                { label: "Blog", path: "/blog" },
                 { label: "Contact Us", path: "/contact" },
               ].map((link) => (
                 <li key={link.path}>
@@ -83,15 +84,15 @@ const Footer = () => {
             <ul className="space-y-3 text-sm text-primary-foreground/70">
               <li className="flex items-start gap-2">
                 <Mail size={16} className="mt-0.5 shrink-0" />
-                <a href="mailto:info@iacpd.org" className="hover:text-primary-foreground transition-colors">info@iacpd.org</a>
+                <a href="mailto:teachersteve75@gmail.com" className="hover:text-primary-foreground transition-colors break-all">teachersteve75@gmail.com</a>
               </li>
               <li className="flex items-start gap-2">
                 <Phone size={16} className="mt-0.5 shrink-0" />
-                <a href="tel:+18000000000" className="hover:text-primary-foreground transition-colors">+1 (800) 000-0000</a>
+                <a href="tel:+447448519299" className="hover:text-primary-foreground transition-colors">+44 7448 519299</a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin size={16} className="mt-0.5 shrink-0" />
-                <span>Lagos, Nigeria</span>
+                <span>27 Clovelly Drive, Hampton Gardens,<br />Peterborough, PE7 8PZ, UK</span>
               </li>
             </ul>
             <div className="mt-6">
