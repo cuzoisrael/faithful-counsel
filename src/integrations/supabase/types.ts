@@ -196,6 +196,7 @@ export type Database = {
           active: boolean
           bio: string | null
           created_at: string
+          credentials: string | null
           display_order: number
           email: string | null
           id: string
@@ -205,11 +206,13 @@ export type Database = {
           specialties: string[] | null
           title: string
           updated_at: string
+          years_experience: number | null
         }
         Insert: {
           active?: boolean
           bio?: string | null
           created_at?: string
+          credentials?: string | null
           display_order?: number
           email?: string | null
           id?: string
@@ -219,11 +222,13 @@ export type Database = {
           specialties?: string[] | null
           title: string
           updated_at?: string
+          years_experience?: number | null
         }
         Update: {
           active?: boolean
           bio?: string | null
           created_at?: string
+          credentials?: string | null
           display_order?: number
           email?: string | null
           id?: string
@@ -233,6 +238,61 @@ export type Database = {
           specialties?: string[] | null
           title?: string
           updated_at?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      intake_forms: {
+        Row: {
+          allergies: string | null
+          booking_id: string
+          consent: boolean
+          created_at: string
+          current_medications: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          emotional_history: string | null
+          family_history: string | null
+          id: string
+          medical_history: string | null
+          presenting_concerns: string | null
+          prior_therapy: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allergies?: string | null
+          booking_id: string
+          consent?: boolean
+          created_at?: string
+          current_medications?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emotional_history?: string | null
+          family_history?: string | null
+          id?: string
+          medical_history?: string | null
+          presenting_concerns?: string | null
+          prior_therapy?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allergies?: string | null
+          booking_id?: string
+          consent?: boolean
+          created_at?: string
+          current_medications?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emotional_history?: string | null
+          family_history?: string | null
+          id?: string
+          medical_history?: string | null
+          presenting_concerns?: string | null
+          prior_therapy?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
