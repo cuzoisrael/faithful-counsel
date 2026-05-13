@@ -405,6 +405,7 @@ export type Database = {
           active: boolean | null
           bio: string | null
           created_at: string | null
+          credentials: string | null
           display_order: number | null
           id: string | null
           image_url: string | null
@@ -412,11 +413,13 @@ export type Database = {
           specialties: string[] | null
           title: string | null
           updated_at: string | null
+          years_experience: number | null
         }
         Insert: {
           active?: boolean | null
           bio?: string | null
           created_at?: string | null
+          credentials?: string | null
           display_order?: number | null
           id?: string | null
           image_url?: string | null
@@ -424,11 +427,13 @@ export type Database = {
           specialties?: string[] | null
           title?: string | null
           updated_at?: string | null
+          years_experience?: number | null
         }
         Update: {
           active?: boolean | null
           bio?: string | null
           created_at?: string | null
+          credentials?: string | null
           display_order?: number | null
           id?: string | null
           image_url?: string | null
@@ -436,6 +441,7 @@ export type Database = {
           specialties?: string[] | null
           title?: string | null
           updated_at?: string | null
+          years_experience?: number | null
         }
         Relationships: []
       }
