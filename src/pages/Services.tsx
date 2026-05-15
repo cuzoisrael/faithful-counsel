@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Heart, Brain, Users, BookOpen, Shield, Sparkles, GraduationCap, Briefcase, ArrowRight, ChevronDown } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTASection from "@/components/shared/CTASection";
 
@@ -56,6 +57,7 @@ const howItWorks = [
 const Services = () => {
   return (
     <Layout>
+      <SEO title="Counseling & Coaching Services" description="Marriage, mental health, leadership, trauma, and certification programs grounded in faith and clinical best practice." path="/services" />
       {/* Hero */}
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { toast } from "sonner";
 
@@ -93,6 +94,7 @@ const Bookings = () => {
 
   return (
     <Layout>
+      <SEO title="Book a Counseling Session" description="Schedule an online or in-person session with an IACPD counselor or coach. Choose your service, counselor, and preferred time." path="/bookings" />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-4">Bookings & Registration</h1>

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import CTASection from "@/components/shared/CTASection";
+import SEO from "@/components/shared/SEO";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Post {
@@ -61,8 +62,24 @@ const BlogPost = () => {
     );
   }
 
+  const description = (post.excerpt || post.content || "").slice(0, 155);
   return (
     <Layout>
+      <SEO
+        title={post.title}
+        description={description || `Read ${post.title} on the IACPD blog.`}
+        path={`/blog/${post.slug}`}
+        ogType="article"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: post.title,
+          author: { "@type": "Person", name: post.author || "IACPD" },
+          datePublished: post.created_at,
+          image: post.featured_image || undefined,
+          mainEntityOfPage: `https://iacpd.lovable.app/blog/${post.slug}`,
+        }}
+      />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <Link to="/blog" className="inline-flex items-center gap-1 text-primary-foreground/80 hover:text-primary-foreground text-sm mb-4 transition-colors">

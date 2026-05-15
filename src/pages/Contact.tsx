@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, MessageCircle } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTASection from "@/components/shared/CTASection";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,6 +36,30 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Contact IACPD"
+        description="Get in touch with IACPD by email, phone, or WhatsApp. Based in Peterborough, UK — serving clients online worldwide."
+        path="/contact"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "IACPD",
+          email: "teachersteve75@gmail.com",
+          telephone: "+44-7448-519299",
+          url: "https://iacpd.lovable.app/contact",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "27 Clovelly Drive, Hampton Gardens",
+            addressLocality: "Peterborough",
+            postalCode: "PE7 8PZ",
+            addressCountry: "GB",
+          },
+          openingHoursSpecification: [
+            { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "09:00", closes: "17:00" },
+            { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "14:00" },
+          ],
+        }}
+      />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-4">Contact Us</h1>

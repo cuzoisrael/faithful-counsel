@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import TestimonialCard from "@/components/shared/TestimonialCard";
 import CTASection from "@/components/shared/CTASection";
@@ -59,6 +60,7 @@ const Testimonials = () => {
 
   return (
     <Layout>
+      <SEO title="Client Testimonials" description="Hear from individuals, couples, and leaders whose lives have been transformed through IACPD's faith-based counseling and coaching." path="/testimonials" />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-4">Testimonials</h1>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, User, Search } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import CTASection from "@/components/shared/CTASection";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -47,6 +48,7 @@ const Blog = () => {
 
   return (
     <Layout>
+      <SEO title="Blog & Insights" description="Articles on faith, mental health, marriage, leadership, and personal growth from the IACPD counseling team." path="/blog" />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-4">Blog, Resources & Events</h1>
