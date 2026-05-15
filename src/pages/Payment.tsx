@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { Copy, CheckCircle2, AlertCircle, Clock, XCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -87,6 +88,7 @@ const Payment = () => {
 
   return (
     <Layout>
+      <SEO title="Payment & Bank Details" description="Secure payment instructions for IACPD sessions and conference bookings. Bank details are revealed once your booking is confirmed." path="/payment" />
       <section className="bg-secondary/30 py-16">
         <div className="container mx-auto px-4">
           <SectionHeading

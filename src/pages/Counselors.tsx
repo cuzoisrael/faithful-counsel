@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Award, Briefcase, Loader2, Sparkles } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -33,6 +34,7 @@ const Counselors = () => {
 
   return (
     <Layout>
+      <SEO title="Our Counselors" description="Meet IACPD's certified counselors and coaches — view specialties, credentials, and book directly with the right fit for you." path="/counselors" />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-4">

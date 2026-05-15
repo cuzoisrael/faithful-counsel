@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Heart, Users, Brain, BookOpen, Shield, Sparkles, ArrowRight, ChevronDown, Mail } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import ServiceCard from "@/components/shared/ServiceCard";
 import TestimonialCard from "@/components/shared/TestimonialCard";
@@ -68,6 +69,20 @@ const NewsletterForm = () => {
 const Index = () => {
   return (
     <Layout>
+      <SEO
+        title="IACPD | Faith-Based Counseling & Personal Development"
+        description="Faith-based counseling, coaching, and leadership development integrating biblical wisdom with psychological insight."
+        path="/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }}
+      />
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         <HeroSlideshow />

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Download, BookOpen, FileText, Sparkles } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { resources, therapyCategories, downloadResource, type ResourceKind } from "@/data/resources";
 
@@ -26,6 +27,7 @@ const Resources = () => {
 
   return (
     <Layout>
+      <SEO title="Faith-Based Resources" description="Free downloadable worksheets, reading guides, and prayer journals organized by therapy type to support your growth between sessions." path="/resources" />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-4">

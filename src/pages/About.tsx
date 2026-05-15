@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Eye, Target, Heart, BookOpen, Shield, Users } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTASection from "@/components/shared/CTASection";
 import aboutHero from "@/assets/about-hero.jpg";
@@ -24,6 +25,7 @@ const counselors = [
 const About = () => {
   return (
     <Layout>
+      <SEO title="About IACPD" description="Meet the team behind IACPD: faith-based counselors, coaches, and educators integrating biblical principles with psychology to help people thrive." path="/about" />
       {/* Hero */}
       <section className="relative h-[40vh] min-h-[300px] flex items-center">
         <div className="absolute inset-0">
