@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, Linkedin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Facebook, Instagram, Twitter, Youtube, Linkedin } from "lucide-react";
 import logoIcon from "@/assets/logo-icon.png";
 
 const socialLinks = [
