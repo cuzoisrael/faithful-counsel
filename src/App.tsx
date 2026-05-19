@@ -24,6 +24,7 @@ import AdminMessages from "./pages/admin/AdminMessages";
 import AdminConferences from "./pages/admin/AdminConferences";
 import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import AdminCounselors from "./pages/admin/AdminCounselors";
+import AdminResources from "./pages/admin/AdminResources";
 import Payment from "./pages/Payment";
 import Resources from "./pages/Resources";
 import Counselors from "./pages/Counselors";
@@ -66,6 +67,7 @@ const App = () => (
                 <Route path="blog" element={<AdminBlog />} />
                 <Route path="messages" element={<AdminMessages />} />
                 <Route path="newsletter" element={<AdminNewsletter />} />
+                <Route path="resources" element={<AdminResources />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
