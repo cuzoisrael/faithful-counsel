@@ -540,6 +540,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_resource_downloads: {
+        Args: { _id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
