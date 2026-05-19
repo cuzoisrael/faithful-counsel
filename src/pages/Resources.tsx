@@ -1,29 +1,77 @@
-import { useMemo, useState } from "react";
-import { Download, BookOpen, FileText, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Download, BookOpen, FileText, Sparkles, Loader2 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import SEO from "@/components/shared/SEO";
-import SectionHeading from "@/components/shared/SectionHeading";
-import { resources, therapyCategories, downloadResource, type ResourceKind } from "@/data/resources";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
-const kindMeta: Record<ResourceKind, { icon: any; label: string }> = {
+type Kind = "worksheet" | "reading" | "prayer-journal";
+
+interface Resource {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  kind: Kind;
+}
+
+const kindMeta: Record<Kind, { icon: any; label: string }> = {
   worksheet: { icon: FileText, label: "Worksheet" },
   reading: { icon: BookOpen, label: "Reading" },
   "prayer-journal": { icon: Sparkles, label: "Prayer Journal" },
 };
 
 const Resources = () => {
+  const [items, setItems] = useState<Resource[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [activeKind, setActiveKind] = useState<ResourceKind | "All">("All");
+  const [activeKind, setActiveKind] = useState<Kind | "All">("All");
+
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await supabase
+        .from("resources")
+        .select("id, title, description, category, kind")
+        .eq("active", true)
+        .order("display_order", { ascending: true });
+      if (error) toast({ title: "Failed to load resources", description: error.message, variant: "destructive" });
+      setItems((data as Resource[]) ?? []);
+      setLoading(false);
+    })();
+  }, []);
+
+  const categories = useMemo(
+    () => Array.from(new Set(items.map((r) => r.category))).sort(),
+    [items],
+  );
 
   const filtered = useMemo(
     () =>
-      resources.filter(
+      items.filter(
         (r) =>
           (activeCategory === "All" || r.category === activeCategory) &&
           (activeKind === "All" || r.kind === activeKind),
       ),
-    [activeCategory, activeKind],
+    [items, activeCategory, activeKind],
   );
+
+  const download = async (r: Resource) => {
+    setDownloadingId(r.id);
+    try {
+      const { data, error } = await supabase.functions.invoke("resource-download", {
+        body: { resourceId: r.id },
+      });
+      if (error) throw error;
+      const url = (data as { url?: string })?.url;
+      if (!url) throw new Error("No download URL returned");
+      window.open(url, "_blank", "noopener");
+    } catch (e: any) {
+      toast({ title: "Download failed", description: e.message, variant: "destructive" });
+    } finally {
+      setDownloadingId(null);
+    }
+  };
 
   return (
     <Layout>
@@ -45,7 +93,7 @@ const Resources = () => {
             <div>
               <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">By Therapy Type</p>
               <div className="flex flex-wrap gap-2">
-                {(["All", ...therapyCategories] as const).map((c) => (
+                {(["All", ...categories]).map((c) => (
                   <button
                     key={c}
                     onClick={() => setActiveCategory(c)}
@@ -73,19 +121,22 @@ const Resources = () => {
                         : "bg-card text-foreground border-border hover:bg-secondary"
                     }`}
                   >
-                    {k === "All" ? "All" : kindMeta[k as ResourceKind].label}
+                    {k === "All" ? "All" : kindMeta[k as Kind].label}
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
-          {filtered.length === 0 ? (
+          {loading ? (
+            <p className="text-center text-muted-foreground py-16">Loading resources…</p>
+          ) : filtered.length === 0 ? (
             <p className="text-center text-muted-foreground py-16">No resources match your filters.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((r) => {
                 const Icon = kindMeta[r.kind].icon;
+                const isDownloading = downloadingId === r.id;
                 return (
                   <article key={r.id} className="bg-card rounded-xl border border-border p-6 card-hover flex flex-col">
                     <div className="flex items-center gap-2 text-xs font-medium text-primary mb-3">
@@ -97,10 +148,12 @@ const Resources = () => {
                     <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{r.title}</h3>
                     <p className="text-sm text-muted-foreground flex-1">{r.description}</p>
                     <button
-                      onClick={() => downloadResource(r)}
-                      className="mt-5 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-accent-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
+                      onClick={() => download(r)}
+                      disabled={isDownloading}
+                      className="mt-5 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-accent-foreground font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-60"
                     >
-                      <Download size={16} /> Download
+                      {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+                      {isDownloading ? "Preparing…" : "Download"}
                     </button>
                   </article>
                 );
