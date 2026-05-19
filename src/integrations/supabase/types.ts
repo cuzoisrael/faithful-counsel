@@ -344,6 +344,92 @@ export type Database = {
         }
         Relationships: []
       }
+      resource_downloads: {
+        Row: {
+          created_at: string
+          id: string
+          ip_hash: string | null
+          resource_id: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          resource_id: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          resource_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_downloads_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resources: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          display_order: number
+          downloads_count: number
+          file_path: string
+          file_size_bytes: number | null
+          id: string
+          kind: string
+          mime_type: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          display_order?: number
+          downloads_count?: number
+          file_path: string
+          file_size_bytes?: number | null
+          id?: string
+          kind: string
+          mime_type?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          display_order?: number
+          downloads_count?: number
+          file_path?: string
+          file_size_bytes?: number | null
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           created_at: string
