@@ -91,6 +91,12 @@ const Footer = () => {
                 <a href="tel:+447448519299" className="hover:text-primary-foreground transition-colors">+44 7448 519299</a>
               </li>
               <li className="flex items-start gap-2">
+                <MessageCircle size={16} className="mt-0.5 shrink-0" />
+                <a href="https://wa.me/447448519299" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">
+                  WhatsApp: +44 7448 519299
+                </a>
+              </li>
+              <li className="flex items-start gap-2">
                 <MapPin size={16} className="mt-0.5 shrink-0" />
                 <span>27 Clovelly Drive, Hampton Gardens,<br />Peterborough, PE7 8PZ, UK</span>
               </li>
