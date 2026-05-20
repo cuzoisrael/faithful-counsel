@@ -14,9 +14,11 @@ interface Counselor {
   specialties: string[] | null;
   display_order: number;
   active: boolean;
+  years_experience: number | null;
+  credentials: string | null;
 }
 
-const empty: Partial<Counselor> = { name: "", title: "", bio: "", image_url: "", email: "", phone: "", specialties: [], display_order: 0, active: true };
+const empty: Partial<Counselor> = { name: "", title: "", bio: "", image_url: "", email: "", phone: "", specialties: [], display_order: 0, active: true, years_experience: null, credentials: "" };
 
 const AdminCounselors = () => {
   const [items, setItems] = useState<Counselor[]>([]);
