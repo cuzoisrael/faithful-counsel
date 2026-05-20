@@ -18,12 +18,7 @@ const serviceTypes = [
   "Corporate Training",
 ];
 
-const counselors = [
-  "Dr. Adaeze Okafor",
-  "Pastor James Adeyemi",
-  "Mrs. Chioma Eze",
-  "No Preference",
-];
+interface CounselorOpt { id: string; name: string; }
 
 const Bookings = () => {
   const [activeTab, setActiveTab] = useState<"session" | "conference">("session");
@@ -32,6 +27,36 @@ const Bookings = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const preselectedCounselor = searchParams.get("counselor") || "";
+
+  const [counselorList, setCounselorList] = useState<CounselorOpt[]>([]);
+  const [counselorId, setCounselorId] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [slots, setSlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
+  useEffect(() => {
+    supabase.from("counselors").select("id, name").eq("active", true).order("display_order")
+      .then(({ data }) => {
+        const list = (data || []) as CounselorOpt[];
+        setCounselorList(list);
+        if (preselectedCounselor) {
+          const m = list.find((c) => c.name === preselectedCounselor);
+          if (m) setCounselorId(m.id);
+        }
+      });
+  }, [preselectedCounselor]);
+
+  useEffect(() => {
+    if (!counselorId || !selectedDate) { setSlots([]); return; }
+    setLoadingSlots(true);
+    setSelectedTime("");
+    fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/get-available-slots?counselor_id=${counselorId}&date=${selectedDate}`)
+      .then((r) => r.json())
+      .then((d) => setSlots(d.slots || []))
+      .catch(() => setSlots([]))
+      .finally(() => setLoadingSlots(false));
+  }, [counselorId, selectedDate]);
 
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
