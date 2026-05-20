@@ -34,6 +34,8 @@ const IntakeForm = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [existing, setExisting] = useState<any>(null);
+  const [files, setFiles] = useState<IntakeFile[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
