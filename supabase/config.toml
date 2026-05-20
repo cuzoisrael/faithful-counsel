@@ -2,3 +2,7 @@ project_id = "hbdxzwmicykcmjsgoadt"
 
 [functions.resource-download]
 verify_jwt = false
+
+[functions.get-available-slots]
+verify_jwt = false
+
