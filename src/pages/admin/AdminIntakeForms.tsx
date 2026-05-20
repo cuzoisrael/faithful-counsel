@@ -41,7 +41,7 @@ const AdminIntakeForms = () => {
 
   const save = async () => {
     if (!editing?.name) return toast.error("Name required");
-    const payload = {
+    const payload: any = {
       name: editing.name,
       description: editing.description || null,
       counselor_id: editing.counselor_id || null,
