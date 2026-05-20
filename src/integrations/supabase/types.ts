@@ -73,6 +73,7 @@ export type Database = {
       }
       bookings: {
         Row: {
+          counselor_id: string | null
           created_at: string
           email: string
           full_name: string
@@ -89,6 +90,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          counselor_id?: string | null
           created_at?: string
           email: string
           full_name: string
@@ -105,6 +107,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          counselor_id?: string | null
           created_at?: string
           email?: string
           full_name?: string
@@ -191,6 +194,93 @@ export type Database = {
         }
         Relationships: []
       }
+      counselor_availability: {
+        Row: {
+          active: boolean
+          counselor_id: string
+          created_at: string
+          end_time: string
+          id: string
+          start_time: string
+          weekday: number
+        }
+        Insert: {
+          active?: boolean
+          counselor_id: string
+          created_at?: string
+          end_time: string
+          id?: string
+          start_time: string
+          weekday: number
+        }
+        Update: {
+          active?: boolean
+          counselor_id?: string
+          created_at?: string
+          end_time?: string
+          id?: string
+          start_time?: string
+          weekday?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "counselor_availability_counselor_id_fkey"
+            columns: ["counselor_id"]
+            isOneToOne: false
+            referencedRelation: "counselors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "counselor_availability_counselor_id_fkey"
+            columns: ["counselor_id"]
+            isOneToOne: false
+            referencedRelation: "counselors_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      counselor_time_off: {
+        Row: {
+          counselor_id: string
+          created_at: string
+          end_at: string
+          id: string
+          reason: string | null
+          start_at: string
+        }
+        Insert: {
+          counselor_id: string
+          created_at?: string
+          end_at: string
+          id?: string
+          reason?: string | null
+          start_at: string
+        }
+        Update: {
+          counselor_id?: string
+          created_at?: string
+          end_at?: string
+          id?: string
+          reason?: string | null
+          start_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "counselor_time_off_counselor_id_fkey"
+            columns: ["counselor_id"]
+            isOneToOne: false
+            referencedRelation: "counselors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "counselor_time_off_counselor_id_fkey"
+            columns: ["counselor_id"]
+            isOneToOne: false
+            referencedRelation: "counselors_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       counselors: {
         Row: {
           active: boolean
@@ -241,6 +331,125 @@ export type Database = {
           years_experience?: number | null
         }
         Relationships: []
+      }
+      intake_files: {
+        Row: {
+          booking_id: string
+          created_at: string
+          file_name: string
+          file_path: string
+          file_size_bytes: number | null
+          id: string
+          mime_type: string | null
+          user_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          file_size_bytes?: number | null
+          id?: string
+          mime_type?: string | null
+          user_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          file_size_bytes?: number | null
+          id?: string
+          mime_type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      intake_form_responses: {
+        Row: {
+          booking_id: string
+          created_at: string
+          id: string
+          responses: Json
+          template_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          id?: string
+          responses?: Json
+          template_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          id?: string
+          responses?: Json
+          template_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intake_form_responses_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "intake_form_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      intake_form_templates: {
+        Row: {
+          active: boolean
+          counselor_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          schema: Json
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          counselor_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          schema?: Json
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          counselor_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          schema?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intake_form_templates_counselor_id_fkey"
+            columns: ["counselor_id"]
+            isOneToOne: false
+            referencedRelation: "counselors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "intake_form_templates_counselor_id_fkey"
+            columns: ["counselor_id"]
+            isOneToOne: false
+            referencedRelation: "counselors_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       intake_forms: {
         Row: {
