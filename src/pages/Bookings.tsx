@@ -175,13 +175,10 @@ const Bookings = () => {
                   </select>
                 </div>
                 <div>
-                  <label className={labelClass}>Preferred Counselor</label>
-                  <select name="preferred_counselor" defaultValue={preselectedCounselor} className={inputClass}>
+                  <label className={labelClass}>Counselor *</label>
+                  <select required value={counselorId} onChange={(e) => setCounselorId(e.target.value)} className={inputClass}>
                     <option value="">Select counselor</option>
-                    {(preselectedCounselor && !counselors.includes(preselectedCounselor)) && (
-                      <option value={preselectedCounselor}>{preselectedCounselor}</option>
-                    )}
-                    {counselors.map((c) => <option key={c} value={c}>{c}</option>)}
+                    {counselorList.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </div>
                 <div>
@@ -194,11 +191,23 @@ const Bookings = () => {
                 </div>
                 <div>
                   <label className={labelClass}>Preferred Date *</label>
-                  <input required name="preferred_date" type="date" className={inputClass} />
+                  <input required type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} min={new Date().toISOString().split("T")[0]} className={inputClass} />
                 </div>
-                <div>
-                  <label className={labelClass}>Preferred Time *</label>
-                  <input required name="preferred_time" type="time" className={inputClass} />
+                <div className="md:col-span-2">
+                  <label className={labelClass}>Available Times {loadingSlots && <span className="text-xs text-muted-foreground ml-2">loading...</span>}</label>
+                  {!counselorId || !selectedDate ? (
+                    <p className="text-sm text-muted-foreground">Select a counselor and date to see open time slots.</p>
+                  ) : slots.length === 0 && !loadingSlots ? (
+                    <p className="text-sm text-muted-foreground">No availability on this date. Please try another day.</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {slots.map((t) => (
+                        <button key={t} type="button" onClick={() => setSelectedTime(t)} className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${selectedTime === t ? "bg-primary text-primary-foreground border-primary" : "bg-card border-input text-foreground hover:bg-secondary"}`}>
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="md:col-span-2">
                   <label className={labelClass}>Message (optional)</label>
