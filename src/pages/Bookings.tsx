@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,12 +18,7 @@ const serviceTypes = [
   "Corporate Training",
 ];
 
-const counselors = [
-  "Dr. Adaeze Okafor",
-  "Pastor James Adeyemi",
-  "Mrs. Chioma Eze",
-  "No Preference",
-];
+interface CounselorOpt { id: string; name: string; }
 
 const Bookings = () => {
   const [activeTab, setActiveTab] = useState<"session" | "conference">("session");
@@ -33,11 +28,46 @@ const Bookings = () => {
   const [searchParams] = useSearchParams();
   const preselectedCounselor = searchParams.get("counselor") || "";
 
+  const [counselorList, setCounselorList] = useState<CounselorOpt[]>([]);
+  const [counselorId, setCounselorId] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [slots, setSlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
+  useEffect(() => {
+    supabase.from("counselors").select("id, name").eq("active", true).order("display_order")
+      .then(({ data }) => {
+        const list = (data || []) as CounselorOpt[];
+        setCounselorList(list);
+        if (preselectedCounselor) {
+          const m = list.find((c) => c.name === preselectedCounselor);
+          if (m) setCounselorId(m.id);
+        }
+      });
+  }, [preselectedCounselor]);
+
+  useEffect(() => {
+    if (!counselorId || !selectedDate) { setSlots([]); return; }
+    setLoadingSlots(true);
+    setSelectedTime("");
+    fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/get-available-slots?counselor_id=${counselorId}&date=${selectedDate}`)
+      .then((r) => r.json())
+      .then((d) => setSlots(d.slots || []))
+      .catch(() => setSlots([]))
+      .finally(() => setLoadingSlots(false));
+  }, [counselorId, selectedDate]);
+
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (counselorList.length > 0 && (!counselorId || !selectedTime)) {
+      toast.error("Please pick a counselor and an available time slot.");
+      return;
+    }
     setLoading(true);
     const form = e.target as HTMLFormElement;
     const fd = new FormData(form);
+    const counselorName = counselorList.find((c) => c.id === counselorId)?.name || null;
 
     const { error } = await supabase.from("bookings").insert({
       user_id: user?.id || null,
@@ -45,10 +75,11 @@ const Bookings = () => {
       email: fd.get("email") as string,
       phone: fd.get("phone") as string,
       service_type: fd.get("service_type") as string,
-      preferred_counselor: (fd.get("preferred_counselor") as string) || null,
+      preferred_counselor: counselorName,
+      counselor_id: counselorId || null,
       session_format: fd.get("session_format") as string,
-      preferred_date: fd.get("preferred_date") as string,
-      preferred_time: fd.get("preferred_time") as string,
+      preferred_date: selectedDate || (fd.get("preferred_date") as string),
+      preferred_time: selectedTime || (fd.get("preferred_time") as string),
       message: (fd.get("message") as string) || null,
     });
 
@@ -144,13 +175,10 @@ const Bookings = () => {
                   </select>
                 </div>
                 <div>
-                  <label className={labelClass}>Preferred Counselor</label>
-                  <select name="preferred_counselor" defaultValue={preselectedCounselor} className={inputClass}>
+                  <label className={labelClass}>Counselor *</label>
+                  <select required value={counselorId} onChange={(e) => setCounselorId(e.target.value)} className={inputClass}>
                     <option value="">Select counselor</option>
-                    {(preselectedCounselor && !counselors.includes(preselectedCounselor)) && (
-                      <option value={preselectedCounselor}>{preselectedCounselor}</option>
-                    )}
-                    {counselors.map((c) => <option key={c} value={c}>{c}</option>)}
+                    {counselorList.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </div>
                 <div>
@@ -163,11 +191,23 @@ const Bookings = () => {
                 </div>
                 <div>
                   <label className={labelClass}>Preferred Date *</label>
-                  <input required name="preferred_date" type="date" className={inputClass} />
+                  <input required type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} min={new Date().toISOString().split("T")[0]} className={inputClass} />
                 </div>
-                <div>
-                  <label className={labelClass}>Preferred Time *</label>
-                  <input required name="preferred_time" type="time" className={inputClass} />
+                <div className="md:col-span-2">
+                  <label className={labelClass}>Available Times {loadingSlots && <span className="text-xs text-muted-foreground ml-2">loading...</span>}</label>
+                  {!counselorId || !selectedDate ? (
+                    <p className="text-sm text-muted-foreground">Select a counselor and date to see open time slots.</p>
+                  ) : slots.length === 0 && !loadingSlots ? (
+                    <p className="text-sm text-muted-foreground">No availability on this date. Please try another day.</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {slots.map((t) => (
+                        <button key={t} type="button" onClick={() => setSelectedTime(t)} className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${selectedTime === t ? "bg-primary text-primary-foreground border-primary" : "bg-card border-input text-foreground hover:bg-secondary"}`}>
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="md:col-span-2">
                   <label className={labelClass}>Message (optional)</label>

@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Loader2, ShieldCheck } from "lucide-react";
+import { Loader2, ShieldCheck, Paperclip, Trash2 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+interface IntakeFile {
+  id: string;
+  file_name: string;
+  file_path: string;
+  file_size_bytes: number | null;
+  mime_type: string | null;
+}
 
 interface Booking {
   id: string;
@@ -26,6 +34,8 @@ const IntakeForm = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [existing, setExisting] = useState<any>(null);
+  const [files, setFiles] = useState<IntakeFile[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -44,9 +54,44 @@ const IntakeForm = () => {
         .eq("booking_id", bookingId)
         .maybeSingle();
       setExisting(f);
+      const { data: fl } = await supabase
+        .from("intake_files")
+        .select("id, file_name, file_path, file_size_bytes, mime_type")
+        .eq("booking_id", bookingId)
+        .order("created_at", { ascending: false });
+      setFiles((fl as IntakeFile[]) || []);
       setLoading(false);
     })();
   }, [authLoading, user, bookingId]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!user || !booking || !e.target.files?.length) return;
+    const file = e.target.files[0];
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File too large (max 10MB)");
+      return;
+    }
+    setUploading(true);
+    const path = `${user.id}/${booking.id}/${Date.now()}-${file.name}`;
+    const { error: upErr } = await supabase.storage.from("booking-files").upload(path, file);
+    if (upErr) { setUploading(false); toast.error(upErr.message); return; }
+    const { data, error } = await supabase.from("intake_files").insert({
+      user_id: user.id, booking_id: booking.id, file_path: path,
+      file_name: file.name, file_size_bytes: file.size, mime_type: file.type,
+    }).select().single();
+    setUploading(false);
+    e.target.value = "";
+    if (error) { toast.error(error.message); return; }
+    setFiles((prev) => [data as IntakeFile, ...prev]);
+    toast.success("File uploaded");
+  };
+
+  const deleteFile = async (f: IntakeFile) => {
+    if (!confirm(`Delete ${f.file_name}?`)) return;
+    await supabase.storage.from("booking-files").remove([f.file_path]);
+    await supabase.from("intake_files").delete().eq("id", f.id);
+    setFiles((prev) => prev.filter((x) => x.id !== f.id));
+  };
 
   if (authLoading || loading) {
     return (
@@ -255,6 +300,27 @@ const IntakeForm = () => {
                   className={inputClass}
                 />
               </div>
+            </div>
+
+            <div className="pt-2">
+              <label className={labelClass}>Supporting Documents (optional)</label>
+              <p className="text-xs text-muted-foreground mb-2">Upload medical records, prior assessments, or anything helpful (max 10MB each).</p>
+              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-input cursor-pointer text-sm hover:bg-secondary">
+                <Paperclip size={14} /> {uploading ? "Uploading..." : "Attach a file"}
+                <input type="file" className="hidden" onChange={handleFileUpload} disabled={uploading} />
+              </label>
+              {files.length > 0 && (
+                <ul className="mt-3 space-y-1.5">
+                  {files.map((f) => (
+                    <li key={f.id} className="flex items-center justify-between text-sm px-3 py-2 rounded bg-secondary/50">
+                      <span className="truncate">{f.file_name}</span>
+                      <button type="button" onClick={() => deleteFile(f)} className="text-destructive hover:opacity-80 ml-2">
+                        <Trash2 size={14} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <label className="flex items-start gap-2 text-sm text-muted-foreground">
               <input required type="checkbox" name="consent" defaultChecked={!!existing?.consent} className="mt-1" />

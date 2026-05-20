@@ -14,9 +14,11 @@ interface Counselor {
   specialties: string[] | null;
   display_order: number;
   active: boolean;
+  years_experience: number | null;
+  credentials: string | null;
 }
 
-const empty: Partial<Counselor> = { name: "", title: "", bio: "", image_url: "", email: "", phone: "", specialties: [], display_order: 0, active: true };
+const empty: Partial<Counselor> = { name: "", title: "", bio: "", image_url: "", email: "", phone: "", specialties: [], display_order: 0, active: true, years_experience: null, credentials: "" };
 
 const AdminCounselors = () => {
   const [items, setItems] = useState<Counselor[]>([]);
@@ -47,6 +49,8 @@ const AdminCounselors = () => {
       specialties: specialtiesText.split(",").map((s) => s.trim()).filter(Boolean),
       display_order: Number(editing.display_order) || 0,
       active: editing.active ?? true,
+      years_experience: editing.years_experience ? Number(editing.years_experience) : null,
+      credentials: editing.credentials || null,
     };
     const { error } = editing.id
       ? await supabase.from("counselors").update(payload).eq("id", editing.id)
@@ -121,6 +125,8 @@ const AdminCounselors = () => {
               {[
                 ["name", "Full Name *", "text"],
                 ["title", "Title / Role *", "text"],
+                ["credentials", "Credentials (e.g. MA, LPC)", "text"],
+                ["years_experience", "Years of Experience", "number"],
                 ["email", "Email", "email"],
                 ["phone", "Phone", "tel"],
                 ["image_url", "Image URL", "url"],
