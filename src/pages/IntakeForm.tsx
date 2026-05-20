@@ -54,9 +54,44 @@ const IntakeForm = () => {
         .eq("booking_id", bookingId)
         .maybeSingle();
       setExisting(f);
+      const { data: fl } = await supabase
+        .from("intake_files")
+        .select("id, file_name, file_path, file_size_bytes, mime_type")
+        .eq("booking_id", bookingId)
+        .order("created_at", { ascending: false });
+      setFiles((fl as IntakeFile[]) || []);
       setLoading(false);
     })();
   }, [authLoading, user, bookingId]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!user || !booking || !e.target.files?.length) return;
+    const file = e.target.files[0];
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File too large (max 10MB)");
+      return;
+    }
+    setUploading(true);
+    const path = `${user.id}/${booking.id}/${Date.now()}-${file.name}`;
+    const { error: upErr } = await supabase.storage.from("booking-files").upload(path, file);
+    if (upErr) { setUploading(false); toast.error(upErr.message); return; }
+    const { data, error } = await supabase.from("intake_files").insert({
+      user_id: user.id, booking_id: booking.id, file_path: path,
+      file_name: file.name, file_size_bytes: file.size, mime_type: file.type,
+    }).select().single();
+    setUploading(false);
+    e.target.value = "";
+    if (error) { toast.error(error.message); return; }
+    setFiles((prev) => [data as IntakeFile, ...prev]);
+    toast.success("File uploaded");
+  };
+
+  const deleteFile = async (f: IntakeFile) => {
+    if (!confirm(`Delete ${f.file_name}?`)) return;
+    await supabase.storage.from("booking-files").remove([f.file_path]);
+    await supabase.from("intake_files").delete().eq("id", f.id);
+    setFiles((prev) => prev.filter((x) => x.id !== f.id));
+  };
 
   if (authLoading || loading) {
     return (
