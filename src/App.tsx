@@ -70,6 +70,8 @@ const App = () => (
                 <Route path="messages" element={<AdminMessages />} />
                 <Route path="newsletter" element={<AdminNewsletter />} />
                 <Route path="resources" element={<AdminResources />} />
+                <Route path="availability" element={<AdminAvailability />} />
+                <Route path="intake-forms" element={<AdminIntakeForms />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
