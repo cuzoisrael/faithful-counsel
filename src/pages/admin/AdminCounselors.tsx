@@ -125,6 +125,8 @@ const AdminCounselors = () => {
               {[
                 ["name", "Full Name *", "text"],
                 ["title", "Title / Role *", "text"],
+                ["credentials", "Credentials (e.g. MA, LPC)", "text"],
+                ["years_experience", "Years of Experience", "number"],
                 ["email", "Email", "email"],
                 ["phone", "Phone", "tel"],
                 ["image_url", "Image URL", "url"],
