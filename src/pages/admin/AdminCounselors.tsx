@@ -49,6 +49,8 @@ const AdminCounselors = () => {
       specialties: specialtiesText.split(",").map((s) => s.trim()).filter(Boolean),
       display_order: Number(editing.display_order) || 0,
       active: editing.active ?? true,
+      years_experience: editing.years_experience ? Number(editing.years_experience) : null,
+      credentials: editing.credentials || null,
     };
     const { error } = editing.id
       ? await supabase.from("counselors").update(payload).eq("id", editing.id)
