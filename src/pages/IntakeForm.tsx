@@ -301,6 +301,27 @@ const IntakeForm = () => {
                 />
               </div>
             </div>
+
+            <div className="pt-2">
+              <label className={labelClass}>Supporting Documents (optional)</label>
+              <p className="text-xs text-muted-foreground mb-2">Upload medical records, prior assessments, or anything helpful (max 10MB each).</p>
+              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-input cursor-pointer text-sm hover:bg-secondary">
+                <Paperclip size={14} /> {uploading ? "Uploading..." : "Attach a file"}
+                <input type="file" className="hidden" onChange={handleFileUpload} disabled={uploading} />
+              </label>
+              {files.length > 0 && (
+                <ul className="mt-3 space-y-1.5">
+                  {files.map((f) => (
+                    <li key={f.id} className="flex items-center justify-between text-sm px-3 py-2 rounded bg-secondary/50">
+                      <span className="truncate">{f.file_name}</span>
+                      <button type="button" onClick={() => deleteFile(f)} className="text-destructive hover:opacity-80 ml-2">
+                        <Trash2 size={14} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <label className="flex items-start gap-2 text-sm text-muted-foreground">
               <input required type="checkbox" name="consent" defaultChecked={!!existing?.consent} className="mt-1" />
               <span>
