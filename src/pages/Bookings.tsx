@@ -60,9 +60,14 @@ const Bookings = () => {
 
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (counselorList.length > 0 && (!counselorId || !selectedTime)) {
+      toast.error("Please pick a counselor and an available time slot.");
+      return;
+    }
     setLoading(true);
     const form = e.target as HTMLFormElement;
     const fd = new FormData(form);
+    const counselorName = counselorList.find((c) => c.id === counselorId)?.name || null;
 
     const { error } = await supabase.from("bookings").insert({
       user_id: user?.id || null,
@@ -70,10 +75,11 @@ const Bookings = () => {
       email: fd.get("email") as string,
       phone: fd.get("phone") as string,
       service_type: fd.get("service_type") as string,
-      preferred_counselor: (fd.get("preferred_counselor") as string) || null,
+      preferred_counselor: counselorName,
+      counselor_id: counselorId || null,
       session_format: fd.get("session_format") as string,
-      preferred_date: fd.get("preferred_date") as string,
-      preferred_time: fd.get("preferred_time") as string,
+      preferred_date: selectedDate || (fd.get("preferred_date") as string),
+      preferred_time: selectedTime || (fd.get("preferred_time") as string),
       message: (fd.get("message") as string) || null,
     });
 
