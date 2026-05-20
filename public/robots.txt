@@ -6,4 +6,4 @@ Disallow: /auth
 Disallow: /my-bookings
 Disallow: /intake/
 
-Sitemap: https://iacpd.lovable.app/sitemap.xml
+Sitemap: https://iacpd.org/sitemap.xml
