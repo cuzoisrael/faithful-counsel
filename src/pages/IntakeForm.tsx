@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Loader2, ShieldCheck } from "lucide-react";
+import { Loader2, ShieldCheck, Paperclip, Trash2 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+interface IntakeFile {
+  id: string;
+  file_name: string;
+  file_path: string;
+  file_size_bytes: number | null;
+  mime_type: string | null;
+}
 
 interface Booking {
   id: string;
