@@ -25,6 +25,8 @@ import AdminConferences from "./pages/admin/AdminConferences";
 import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import AdminCounselors from "./pages/admin/AdminCounselors";
 import AdminResources from "./pages/admin/AdminResources";
+import AdminAvailability from "./pages/admin/AdminAvailability";
+import AdminIntakeForms from "./pages/admin/AdminIntakeForms";
 import Payment from "./pages/Payment";
 import Resources from "./pages/Resources";
 import Counselors from "./pages/Counselors";
