@@ -77,7 +77,7 @@ const BlogPost = () => {
           author: { "@type": "Person", name: post.author || "IACPD" },
           datePublished: post.created_at,
           image: post.featured_image || undefined,
-          mainEntityOfPage: `https://iacpd.lovable.app/blog/${post.slug}`,
+          mainEntityOfPage: `https://iacpd.org/blog/${post.slug}`,
         }}
       />
       <section className="bg-hero-gradient section-padding text-center">
