@@ -46,7 +46,7 @@ const Contact = () => {
           name: "IACPD",
           email: "teachersteve75@gmail.com",
           telephone: "+44-7448-519299",
-          url: "https://iacpd.lovable.app/contact",
+          url: "https://iacpd.org/contact",
           address: {
             "@type": "PostalAddress",
             streetAddress: "27 Clovelly Drive, Hampton Gardens",
