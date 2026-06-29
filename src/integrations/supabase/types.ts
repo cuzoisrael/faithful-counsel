@@ -77,12 +77,15 @@ export type Database = {
           created_at: string
           email: string
           full_name: string
+          google_event_id: string | null
+          google_event_link: string | null
           id: string
           message: string | null
           phone: string
           preferred_counselor: string | null
           preferred_date: string
           preferred_time: string
+          reminder_sent_at: string | null
           service_type: string
           session_format: string
           status: string
@@ -94,12 +97,15 @@ export type Database = {
           created_at?: string
           email: string
           full_name: string
+          google_event_id?: string | null
+          google_event_link?: string | null
           id?: string
           message?: string | null
           phone: string
           preferred_counselor?: string | null
           preferred_date: string
           preferred_time: string
+          reminder_sent_at?: string | null
           service_type: string
           session_format: string
           status?: string
@@ -111,12 +117,15 @@ export type Database = {
           created_at?: string
           email?: string
           full_name?: string
+          google_event_id?: string | null
+          google_event_link?: string | null
           id?: string
           message?: string | null
           phone?: string
           preferred_counselor?: string | null
           preferred_date?: string
           preferred_time?: string
+          reminder_sent_at?: string | null
           service_type?: string
           session_format?: string
           status?: string
