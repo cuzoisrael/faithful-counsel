@@ -47,6 +47,11 @@ const AdminBookings = () => {
     const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
     if (error) { toast.error("Failed to update"); return; }
     toast.success(`Booking ${status}`);
+    if (status === "confirmed") {
+      const { error: syncErr } = await supabase.functions.invoke("sync-booking-to-calendar", { body: { booking_id: id } });
+      if (syncErr) toast.error("Calendar sync failed (booking still confirmed).");
+      else toast.success("Synced to Google Calendar.");
+    }
     fetchBookings();
   };
 
