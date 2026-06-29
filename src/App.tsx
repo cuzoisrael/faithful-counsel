@@ -33,6 +33,7 @@ import Counselors from "./pages/Counselors";
 import IntakeForm from "./pages/IntakeForm";
 import AdminAccess from "./pages/AdminAccess";
 import NotFound from "./pages/NotFound";
+import InstallPWA from "@/components/shared/InstallPWA";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ const App = () => (
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <InstallPWA />
           </PageTransition>
         </AuthProvider>
       </BrowserRouter>
