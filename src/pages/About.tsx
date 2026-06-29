@@ -5,9 +5,7 @@ import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTASection from "@/components/shared/CTASection";
 import aboutHero from "@/assets/about-hero.jpg";
-import counselor1 from "@/assets/counselor-1.jpg";
-import counselor2 from "@/assets/counselor-2.jpg";
-import counselor3 from "@/assets/counselor-3.jpg";
+import pastorSteve from "@/assets/pastor-steve.jpg";
 
 const values = [
   { icon: Heart, title: "Compassion", desc: "We approach every individual with empathy, love, and understanding." },
@@ -17,9 +15,13 @@ const values = [
 ];
 
 const counselors = [
-  { name: "Dr. Adaeze Okafor", title: "Lead Counselor & Founder", specialization: "Marriage & Family Therapy", bio: "Over 15 years of experience in faith-based counseling. PhD in Clinical Psychology with a focus on family dynamics.", image: counselor1 },
-  { name: "Pastor James Adeyemi", title: "Senior Counselor & Life Coach", specialization: "Leadership & Career Development", bio: "Certified life coach and pastoral counselor with 20+ years of experience in leadership training and mentorship.", image: counselor2 },
-  { name: "Mrs. Chioma Eze", title: "Marriage & Relationship Counselor", specialization: "Couples Therapy & Pre-Marital Counseling", bio: "Passionate about helping couples build strong, lasting relationships grounded in faith and mutual respect.", image: counselor3 },
+  {
+    name: "Pastor Steve Onyenweaku",
+    title: "Lead Coach",
+    specialization: "Faith-Based Counseling & Personal Development",
+    bio: "Pastor Steve leads IACPD with a heart for restoration, integrating biblical wisdom with practical coaching to help individuals, couples, and leaders live whole and purpose-driven lives.",
+    image: pastorSteve,
+  },
 ];
 
 const About = () => {
