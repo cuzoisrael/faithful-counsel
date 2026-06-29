@@ -91,8 +91,8 @@ const About = () => {
       {/* Counselors */}
       <section className="section-padding bg-secondary">
         <div className="container-wide mx-auto">
-          <SectionHeading label="Our Team" title="Meet Our Counselors & Coaches" description="Experienced, certified professionals dedicated to your transformation." />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <SectionHeading label="Our Team" title="Meet Our Lead Coach" description="Faith-rooted leadership guiding your transformation." />
+          <div className="grid grid-cols-1 max-w-md mx-auto gap-8">
             {counselors.map((c, i) => (
               <motion.div
                 key={c.name}
