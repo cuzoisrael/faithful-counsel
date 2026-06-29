@@ -1,0 +1,25 @@
+{
+  "name": "IACPD — Faith-Based Counseling & Personal Development",
+  "short_name": "IACPD",
+  "description": "Faith-based counseling and leadership development integrating biblical wisdom with psychological insight.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fdf8f1",
+  "theme_color": "#0f4c5c",
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
