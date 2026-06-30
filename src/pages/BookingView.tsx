@@ -120,6 +120,45 @@ const BookingView = () => {
               </div>
             </div>
           )}
+
+          {!loading && booking && (
+            <div className="bg-card border border-border rounded-xl p-6 sm:p-8 mt-6">
+              <div className="flex items-center gap-2 mb-4">
+                <MessageCircle size={18} className="text-primary" />
+                <h3 className="font-heading text-lg font-semibold text-foreground">Reminder timeline</h3>
+              </div>
+              {reminders.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No reminder attempts have been recorded yet.</p>
+              ) : (
+                <ol className="space-y-3">
+                  {reminders.map((r) => {
+                    const ds = (r.delivery_status ?? r.status ?? "pending").toLowerCase();
+                    const isOk = ds === "delivered" || ds === "sent";
+                    return (
+                      <li key={r.id} className="flex gap-3 items-start text-sm">
+                        <span className="mt-0.5">
+                          {isOk ? <CheckCircle2 size={16} className="text-green-600" /> : <XCircle size={16} className="text-red-600" />}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-foreground">
+                            <span className="font-medium capitalize">{r.channel}</span>
+                            <span className="text-muted-foreground"> · </span>
+                            <span className={`capitalize ${isOk ? "text-green-700" : "text-red-700"}`}>{ds}</span>
+                            {r.recipient && <span className="text-muted-foreground"> · {r.recipient}</span>}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(r.created_at).toLocaleString()}
+                            {r.delivered_at && ` · delivered ${new Date(r.delivered_at).toLocaleString()}`}
+                          </p>
+                          {r.error_message && <p className="text-xs text-red-600 mt-1">{r.error_message}</p>}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </Layout>
