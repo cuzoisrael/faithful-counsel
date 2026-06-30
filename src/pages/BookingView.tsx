@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, Link } from "react-router-dom";
-import { Calendar, Clock, User, Mail, Phone, Loader2, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Calendar, Clock, User, Mail, Phone, Loader2, ShieldCheck, AlertTriangle, MessageCircle, CheckCircle2, XCircle } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import SectionHeading from "@/components/shared/SectionHeading";
+
+interface ReminderEntry {
+  id: string;
+  channel: string;
+  status: string;
+  delivery_status: string | null;
+  recipient: string | null;
+  error_message: string | null;
+  provider_response: string | null;
+  delivered_at: string | null;
+  status_updated_at: string | null;
+  created_at: string;
+}
 
 interface Booking {
   id: string;
@@ -26,6 +39,7 @@ const BookingView = () => {
   const [params] = useSearchParams();
   const token = params.get("t");
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [reminders, setReminders] = useState<ReminderEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -42,6 +56,7 @@ const BookingView = () => {
         const json = await resp.json();
         if (!resp.ok) throw new Error(json.error || "Could not load booking");
         setBooking(json.booking);
+        setReminders(json.reminders ?? []);
       } catch (e) {
         setError(e instanceof Error ? e.message : "Could not load booking");
       } finally {
@@ -103,6 +118,45 @@ const BookingView = () => {
               <div className="pt-4 border-t border-border text-sm text-muted-foreground">
                 Need to reschedule or cancel? <Link to="/contact" className="text-primary font-semibold hover:underline">Contact us</Link>.
               </div>
+            </div>
+          )}
+
+          {!loading && booking && (
+            <div className="bg-card border border-border rounded-xl p-6 sm:p-8 mt-6">
+              <div className="flex items-center gap-2 mb-4">
+                <MessageCircle size={18} className="text-primary" />
+                <h3 className="font-heading text-lg font-semibold text-foreground">Reminder timeline</h3>
+              </div>
+              {reminders.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No reminder attempts have been recorded yet.</p>
+              ) : (
+                <ol className="space-y-3">
+                  {reminders.map((r) => {
+                    const ds = (r.delivery_status ?? r.status ?? "pending").toLowerCase();
+                    const isOk = ds === "delivered" || ds === "sent";
+                    return (
+                      <li key={r.id} className="flex gap-3 items-start text-sm">
+                        <span className="mt-0.5">
+                          {isOk ? <CheckCircle2 size={16} className="text-green-600" /> : <XCircle size={16} className="text-red-600" />}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-foreground">
+                            <span className="font-medium capitalize">{r.channel}</span>
+                            <span className="text-muted-foreground"> · </span>
+                            <span className={`capitalize ${isOk ? "text-green-700" : "text-red-700"}`}>{ds}</span>
+                            {r.recipient && <span className="text-muted-foreground"> · {r.recipient}</span>}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(r.created_at).toLocaleString()}
+                            {r.delivered_at && ` · delivered ${new Date(r.delivered_at).toLocaleString()}`}
+                          </p>
+                          {r.error_message && <p className="text-xs text-red-600 mt-1">{r.error_message}</p>}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              )}
             </div>
           )}
         </div>
