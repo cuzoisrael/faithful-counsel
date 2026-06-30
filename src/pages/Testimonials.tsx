@@ -29,6 +29,19 @@ const Testimonials = () => {
   const [filter, setFilter] = useState("All");
   const [testimonials, setTestimonials] = useState(fallbackTestimonials);
   const [loading, setLoading] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(true);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [thumbFailed, setThumbFailed] = useState(false);
+  const iframeLoadedRef = useRef(false);
+
+  // If the iframe never fires onLoad within 8s, treat it as failed.
+  useEffect(() => {
+    if (!videoPlaying || videoFailed) return;
+    const t = window.setTimeout(() => {
+      if (!iframeLoadedRef.current) setVideoFailed(true);
+    }, 8000);
+    return () => window.clearTimeout(t);
+  }, [videoPlaying, videoFailed]);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
