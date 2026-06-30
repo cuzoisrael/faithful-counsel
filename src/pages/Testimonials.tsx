@@ -79,7 +79,27 @@ const Testimonials = () => {
 
   return (
     <Layout>
-      <SEO title="Client Testimonials" description="Hear from individuals, couples, and leaders whose lives have been transformed through IACPD's faith-based counseling and coaching." path="/testimonials" />
+      <SEO
+        title="Client Testimonials"
+        description="Hear from individuals, couples, and leaders whose lives have been transformed through IACPD's faith-based counseling and coaching — including Michael & Joy Inusa's story with Pastor Steve."
+        path="/testimonials"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          name: "Michael & Joy Inusa — Personal Development with Pastor Steve",
+          description:
+            "Michael and Joy Inusa share their personal development journey with Pastor Steve Onyenweaku at IACPD.",
+          thumbnailUrl: [VIDEO_THUMBNAIL_URL],
+          uploadDate: "2025-01-01",
+          contentUrl: VIDEO_WATCH_URL,
+          embedUrl: VIDEO_EMBED_URL,
+          publisher: {
+            "@type": "Organization",
+            name: "IACPD",
+            url: "https://iacpd.org",
+          },
+        }}
+      />
       <section className="bg-hero-gradient section-padding text-center">
         <div className="container-narrow mx-auto">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-4">Testimonials</h1>
@@ -88,26 +108,111 @@ const Testimonials = () => {
       </section>
 
       {/* Featured video testimony */}
-      <section className="section-padding bg-background">
+      <section className="section-padding bg-background" aria-labelledby="featured-video-heading">
         <div className="container-narrow mx-auto">
           <SectionHeading
-            label="Watch"
+            label="Featured Video Testimony"
             title="Michael & Joy Inusa's Story"
-            description="Hear Michael and Joy Inusa share their personal development journey with Pastor Steve."
+            description="Hear Michael and Joy Inusa share their personal development journey with Pastor Steve Onyenweaku."
           />
-          <div className="relative w-full overflow-hidden rounded-xl border border-border shadow-card bg-black" style={{ aspectRatio: "16 / 9" }}>
-            <iframe
-              src="https://drive.google.com/file/d/1OveWOpDHJbpA-P09zwgKYrWeR1D_uvkI/preview?autoplay=1&mute=1"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              title="Michael & Joy Inusa — Personal Development with Pastor Steve"
-              className="absolute inset-0 w-full h-full"
-            />
-          </div>
-          <p className="text-sm text-foreground/80 text-center mt-4 font-medium">
-            Michael & Joy Inusa — on their personal development journey with Pastor Steve
-          </p>
-          <p className="text-xs text-muted-foreground text-center mt-1">Video plays muted by default — tap the speaker icon to enable sound.</p>
+          <figure className="mx-auto">
+            <h2 id="featured-video-heading" className="sr-only">
+              Michael & Joy Inusa — Personal Development with Pastor Steve
+            </h2>
+            <div
+              className="relative w-full overflow-hidden rounded-xl border border-border shadow-card bg-black"
+              style={{ aspectRatio: "16 / 9" }}
+            >
+              {!videoFailed && videoPlaying && (
+                <iframe
+                  src={`${VIDEO_EMBED_URL}?autoplay=1&mute=1`}
+                  allow="autoplay; encrypted-media; fullscreen"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  title="Michael & Joy Inusa — Personal Development with Pastor Steve"
+                  className="absolute inset-0 w-full h-full"
+                  onLoad={() => {
+                    iframeLoadedRef.current = true;
+                  }}
+                  onError={() => setVideoFailed(true)}
+                />
+              )}
+
+              {!videoFailed && !videoPlaying && (
+                <button
+                  type="button"
+                  onClick={() => setVideoPlaying(true)}
+                  className="absolute inset-0 w-full h-full group focus:outline-none focus-visible:ring-4 focus-visible:ring-accent"
+                  aria-label="Play Michael & Joy Inusa's video testimony"
+                >
+                  {!thumbFailed ? (
+                    <img
+                      src={VIDEO_THUMBNAIL_URL}
+                      alt="Michael & Joy Inusa preparing to share their testimony"
+                      className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                      loading="lazy"
+                      onError={() => setThumbFailed(true)}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary/70" aria-hidden="true" />
+                  )}
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent text-accent-foreground shadow-lg group-hover:scale-110 transition-transform">
+                      <Play size={32} aria-hidden="true" className="ml-1" />
+                    </span>
+                  </span>
+                </button>
+              )}
+
+              {videoFailed && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-card">
+                  {!thumbFailed && (
+                    <img
+                      src={VIDEO_THUMBNAIL_URL}
+                      alt="Michael & Joy Inusa video preview"
+                      className="absolute inset-0 w-full h-full object-cover opacity-30"
+                      onError={() => setThumbFailed(true)}
+                    />
+                  )}
+                  <div className="relative z-10 max-w-md">
+                    <p className="font-heading text-lg font-semibold text-foreground mb-2">
+                      Video can't be embedded here
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      You can watch Michael & Joy Inusa's testimony directly on Google Drive.
+                    </p>
+                    <a
+                      href={VIDEO_WATCH_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-accent text-accent-foreground font-semibold hover:opacity-90 transition-opacity"
+                    >
+                      Watch on Google Drive <ExternalLink size={16} aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+            <figcaption className="mt-4 text-center">
+              <p className="text-sm md:text-base text-foreground font-medium">
+                Michael &amp; Joy Inusa — on their personal development journey with Pastor Steve
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Video plays muted by default. Tap the speaker icon in the player to enable sound,
+                or{" "}
+                <a
+                  href={VIDEO_WATCH_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-foreground"
+                >
+                  open it on Google Drive
+                </a>
+                .
+              </p>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
