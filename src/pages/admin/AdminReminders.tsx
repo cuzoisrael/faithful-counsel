@@ -9,9 +9,13 @@ interface ReminderLog {
   booking_id: string;
   channel: string;
   status: string;
+  delivery_status?: string | null;
   recipient: string | null;
   provider_response: string | null;
+  provider_message_id?: string | null;
   error_message: string | null;
+  delivered_at?: string | null;
+  status_updated_at?: string | null;
   created_at: string;
 }
 
