@@ -9,4 +9,8 @@ verify_jwt = false
 [functions.view-booking]
 verify_jwt = false
 
+[functions.gatewayapi-webhook]
+verify_jwt = false
+
+
 
