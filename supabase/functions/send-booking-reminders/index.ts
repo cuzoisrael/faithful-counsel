@@ -89,6 +89,15 @@ Deno.serve(async (req) => {
     const body = await resp.text();
     results.push({ id: b.id, ok, info: ok ? "sent" : body });
 
+    await supabase.from("reminder_logs").insert({
+      booking_id: b.id,
+      channel: "whatsapp",
+      status: ok ? "sent" : "failed",
+      recipient: String(recipient),
+      provider_response: body.slice(0, 2000),
+      error_message: ok ? null : `HTTP ${resp.status}`,
+    });
+
     if (ok) {
       await supabase.from("bookings").update({ reminder_sent_at: new Date().toISOString() }).eq("id", b.id);
     }
