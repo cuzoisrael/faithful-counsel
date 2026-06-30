@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { RefreshCw, CheckCircle2, XCircle, Send, Download, Search, X } from "lucide-react";
+import { RefreshCw, CheckCircle2, XCircle, Send, Download, Search, X, FlaskConical } from "lucide-react";
 import { toast } from "sonner";
 import { downloadCSV } from "@/lib/csv";
 
