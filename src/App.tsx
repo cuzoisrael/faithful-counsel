@@ -34,6 +34,7 @@ import Counselors from "./pages/Counselors";
 import IntakeForm from "./pages/IntakeForm";
 import AdminAccess from "./pages/AdminAccess";
 import NotFound from "./pages/NotFound";
+import BookingView from "./pages/BookingView";
 import InstallPWA from "@/components/shared/InstallPWA";
 
 const queryClient = new QueryClient();
