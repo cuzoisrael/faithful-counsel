@@ -71,17 +71,24 @@ const Testimonials = () => {
       {/* Featured video testimony */}
       <section className="section-padding bg-background">
         <div className="container-narrow mx-auto">
-          <SectionHeading label="Watch" title="A Client's Video Testimony" description="Hear directly from one of our satisfied clients about their journey with IACPD." />
+          <SectionHeading
+            label="Watch"
+            title="Michael & Joy Inusa's Story"
+            description="Hear Michael and Joy Inusa share their personal development journey with Pastor Steve."
+          />
           <div className="relative w-full overflow-hidden rounded-xl border border-border shadow-card bg-black" style={{ aspectRatio: "16 / 9" }}>
             <iframe
               src="https://drive.google.com/file/d/1OveWOpDHJbpA-P09zwgKYrWeR1D_uvkI/preview?autoplay=1&mute=1"
               allow="autoplay; encrypted-media"
               allowFullScreen
-              title="IACPD Client Video Testimony"
+              title="Michael & Joy Inusa — Personal Development with Pastor Steve"
               className="absolute inset-0 w-full h-full"
             />
           </div>
-          <p className="text-xs text-muted-foreground text-center mt-3">Video plays muted by default — tap the speaker icon to enable sound.</p>
+          <p className="text-sm text-foreground/80 text-center mt-4 font-medium">
+            Michael & Joy Inusa — on their personal development journey with Pastor Steve
+          </p>
+          <p className="text-xs text-muted-foreground text-center mt-1">Video plays muted by default — tap the speaker icon to enable sound.</p>
         </div>
       </section>
 
