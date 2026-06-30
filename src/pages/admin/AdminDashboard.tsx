@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, CalendarCheck, MessageSquare, FileText, Star, LogOut, Menu, Users, Mail, UserCog, BookOpen, Clock, ClipboardList } from "lucide-react";
+import { LayoutDashboard, CalendarCheck, MessageSquare, FileText, Star, LogOut, Menu, Users, Mail, UserCog, BookOpen, Clock, ClipboardList, BellRing } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import logoIcon from "@/assets/logo-icon.png";
 
 const sidebarLinks = [
   { label: "Overview", path: "/admin", icon: LayoutDashboard },
   { label: "Bookings", path: "/admin/bookings", icon: CalendarCheck },
+  { label: "Reminders", path: "/admin/reminders", icon: BellRing },
   { label: "Conferences", path: "/admin/conferences", icon: Users },
   { label: "Counselors", path: "/admin/counselors", icon: UserCog },
   { label: "Availability", path: "/admin/availability", icon: Clock },
@@ -53,8 +55,13 @@ const AdminDashboard = () => {
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-card border-r border-border transform transition-transform lg:translate-x-0 lg:static lg:inset-auto ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-6 border-b border-border">
-          <Link to="/" className="font-heading text-lg font-bold text-primary">IACPD</Link>
-          <p className="text-xs text-muted-foreground mt-1">Admin Panel</p>
+          <Link to="/" className="flex items-center gap-2">
+            <img src={logoIcon} alt="IACPD" className="h-9 w-9" />
+            <div>
+              <span className="font-heading text-lg font-bold text-primary block leading-tight">IACPD</span>
+              <span className="text-xs text-muted-foreground">Admin Panel</span>
+            </div>
+          </Link>
         </div>
         <nav className="p-4 space-y-1">
           {sidebarLinks.map((link) => (

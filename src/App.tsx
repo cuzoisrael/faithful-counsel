@@ -26,6 +26,7 @@ import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import AdminCounselors from "./pages/admin/AdminCounselors";
 import AdminResources from "./pages/admin/AdminResources";
 import AdminAvailability from "./pages/admin/AdminAvailability";
+import AdminReminders from "./pages/admin/AdminReminders";
 import AdminIntakeForms from "./pages/admin/AdminIntakeForms";
 import Payment from "./pages/Payment";
 import Resources from "./pages/Resources";
@@ -64,6 +65,7 @@ const App = () => (
               <Route path="/admin" element={<AdminDashboard />}>
                 <Route index element={<AdminOverview />} />
                 <Route path="bookings" element={<AdminBookings />} />
+                <Route path="reminders" element={<AdminReminders />} />
                 <Route path="conferences" element={<AdminConferences />} />
                 <Route path="counselors" element={<AdminCounselors />} />
                 <Route path="testimonials" element={<AdminTestimonials />} />
