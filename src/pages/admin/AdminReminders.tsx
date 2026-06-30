@@ -193,6 +193,33 @@ const AdminReminders = () => {
           </div>
         </div>
 
+        <div className="bg-card border border-border rounded-xl p-4 mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            <FlaskConical size={16} className="text-accent" />
+            <h2 className="font-semibold text-foreground text-sm">Test Mode — send a reminder for a specific booking</h2>
+          </div>
+          <p className="text-xs text-muted-foreground mb-3">
+            Sends an immediate WhatsApp reminder (with the secure booking link) bypassing the 24-hour window. Does not mark the booking as reminded.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              value={testBookingId}
+              onChange={(e) => setTestBookingId(e.target.value)}
+              placeholder="Paste booking ID (UUID)"
+              className="flex-1 px-3 py-2 text-sm border border-input rounded-md bg-background text-foreground font-mono"
+            />
+            <button
+              onClick={triggerTest}
+              disabled={testing || !testBookingId.trim()}
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50"
+            >
+              <FlaskConical size={16} /> {testing ? "Sending..." : "Send Test Reminder"}
+            </button>
+          </div>
+        </div>
+
+
+
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-card rounded-xl border border-border p-4">
             <p className="text-xs text-muted-foreground">Attempts (filtered)</p>
