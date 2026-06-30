@@ -6,3 +6,7 @@ verify_jwt = false
 [functions.get-available-slots]
 verify_jwt = false
 
+[functions.view-booking]
+verify_jwt = false
+
+

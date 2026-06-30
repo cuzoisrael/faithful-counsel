@@ -34,6 +34,7 @@ import Counselors from "./pages/Counselors";
 import IntakeForm from "./pages/IntakeForm";
 import AdminAccess from "./pages/AdminAccess";
 import NotFound from "./pages/NotFound";
+import BookingView from "./pages/BookingView";
 import InstallPWA from "@/components/shared/InstallPWA";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="/counselors" element={<Counselors />} />
               <Route path="/intake/:bookingId" element={<IntakeForm />} />
               <Route path="/admin-access" element={<AdminAccess />} />
+              <Route path="/booking/view/:id" element={<BookingView />} />
               <Route path="/admin" element={<AdminDashboard />}>
                 <Route index element={<AdminOverview />} />
                 <Route path="bookings" element={<AdminBookings />} />
