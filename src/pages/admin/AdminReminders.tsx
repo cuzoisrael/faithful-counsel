@@ -252,7 +252,7 @@ const AdminReminders = () => {
             <table className="w-full text-sm">
               <thead className="bg-secondary">
                 <tr>
-                  {["Status", "Client", "Session", "Channel", "Recipient", "Details", "When"].map((h) => (
+                  {["Send", "Delivery", "Client", "Session", "Channel", "Recipient", "Details", "When"].map((h) => (
                     <th key={h} className="px-4 py-3 text-left font-medium text-muted-foreground">{h}</th>
                   ))}
                 </tr>
@@ -260,6 +260,12 @@ const AdminReminders = () => {
               <tbody className="divide-y divide-border">
                 {filtered.map((l) => {
                   const b = bookings[l.booking_id];
+                  const ds = (l.delivery_status ?? l.status ?? "pending").toLowerCase();
+                  const dsClass =
+                    ds === "delivered" ? "bg-green-100 text-green-800" :
+                    ds === "sent" ? "bg-amber-100 text-amber-800" :
+                    ds === "failed" ? "bg-red-100 text-red-800" :
+                    "bg-muted text-muted-foreground";
                   return (
                     <tr key={l.id} className="hover:bg-secondary/50 align-top">
                       <td className="px-4 py-3">
@@ -268,6 +274,10 @@ const AdminReminders = () => {
                         ) : (
                           <span className="inline-flex items-center gap-1 text-red-700"><XCircle size={14} /> Failed</span>
                         )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium capitalize ${dsClass}`}>{ds}</span>
+                        {l.delivered_at && <p className="text-[10px] text-muted-foreground mt-1">{new Date(l.delivered_at).toLocaleString()}</p>}
                       </td>
                       <td className="px-4 py-3">
                         <p className="font-medium text-foreground">{b?.full_name ?? "—"}</p>
