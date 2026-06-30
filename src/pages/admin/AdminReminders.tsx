@@ -35,6 +35,9 @@ const AdminReminders = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
+  const [testBookingId, setTestBookingId] = useState("");
+  const [testing, setTesting] = useState(false);
+
   const fetchLogs = async () => {
     setLoading(true);
     const { data } = await supabase
