@@ -39,6 +39,7 @@ const BookingView = () => {
   const [params] = useSearchParams();
   const token = params.get("t");
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [reminders, setReminders] = useState<ReminderEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -55,6 +56,7 @@ const BookingView = () => {
         const json = await resp.json();
         if (!resp.ok) throw new Error(json.error || "Could not load booking");
         setBooking(json.booking);
+        setReminders(json.reminders ?? []);
       } catch (e) {
         setError(e instanceof Error ? e.message : "Could not load booking");
       } finally {
