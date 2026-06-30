@@ -562,6 +562,47 @@ export type Database = {
         }
         Relationships: []
       }
+      reminder_logs: {
+        Row: {
+          booking_id: string
+          channel: string
+          created_at: string
+          error_message: string | null
+          id: string
+          provider_response: string | null
+          recipient: string | null
+          status: string
+        }
+        Insert: {
+          booking_id: string
+          channel?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          provider_response?: string | null
+          recipient?: string | null
+          status: string
+        }
+        Update: {
+          booking_id?: string
+          channel?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          provider_response?: string | null
+          recipient?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminder_logs_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       resource_downloads: {
         Row: {
           created_at: string
