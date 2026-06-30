@@ -567,31 +567,49 @@ export type Database = {
           booking_id: string
           channel: string
           created_at: string
+          delivered_at: string | null
+          delivery_status: string
           error_message: string | null
           id: string
+          provider_message_id: string | null
           provider_response: string | null
           recipient: string | null
+          secret_version: number | null
           status: string
+          status_updated_at: string | null
+          triggered_by: string | null
         }
         Insert: {
           booking_id: string
           channel?: string
           created_at?: string
+          delivered_at?: string | null
+          delivery_status?: string
           error_message?: string | null
           id?: string
+          provider_message_id?: string | null
           provider_response?: string | null
           recipient?: string | null
+          secret_version?: number | null
           status: string
+          status_updated_at?: string | null
+          triggered_by?: string | null
         }
         Update: {
           booking_id?: string
           channel?: string
           created_at?: string
+          delivered_at?: string | null
+          delivery_status?: string
           error_message?: string | null
           id?: string
+          provider_message_id?: string | null
           provider_response?: string | null
           recipient?: string | null
+          secret_version?: number | null
           status?: string
+          status_updated_at?: string | null
+          triggered_by?: string | null
         }
         Relationships: [
           {
