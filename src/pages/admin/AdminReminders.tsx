@@ -72,6 +72,21 @@ const AdminReminders = () => {
     fetchLogs();
   };
 
+  const triggerTest = async () => {
+    const id = testBookingId.trim();
+    if (!id) { toast.error("Enter a booking ID first"); return; }
+    setTesting(true);
+    const { data, error } = await supabase.functions.invoke("send-booking-reminders", {
+      body: { booking_id: id, test: true },
+    });
+    setTesting(false);
+    if (error) { toast.error("Test failed: " + error.message); return; }
+    const result = (data as { results?: Array<{ ok: boolean; info?: unknown }> })?.results?.[0];
+    if (result?.ok) toast.success("Test reminder sent — check WhatsApp & the log below");
+    else toast.error(`Test failed: ${typeof result?.info === "string" ? result.info : "see log"}`);
+    fetchLogs();
+  };
+
   const channels = useMemo(() => Array.from(new Set(logs.map((l) => l.channel))).filter(Boolean), [logs]);
 
   const filtered = useMemo(() => {
