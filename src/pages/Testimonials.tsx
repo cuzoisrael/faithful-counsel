@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Play, ExternalLink } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import SEO from "@/components/shared/SEO";
 import SectionHeading from "@/components/shared/SectionHeading";
@@ -8,6 +9,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const categories = ["All", "Individual", "Couple", "Trainee", "Leader"];
+
+const VIDEO_FILE_ID = "1OveWOpDHJbpA-P09zwgKYrWeR1D_uvkI";
+const VIDEO_EMBED_URL = `https://drive.google.com/file/d/${VIDEO_FILE_ID}/preview`;
+const VIDEO_WATCH_URL = `https://drive.google.com/file/d/${VIDEO_FILE_ID}/view`;
+const VIDEO_THUMBNAIL_URL = `https://drive.google.com/thumbnail?id=${VIDEO_FILE_ID}&sz=w1600`;
 
 // Fallback testimonials for when DB is empty
 const fallbackTestimonials = [
