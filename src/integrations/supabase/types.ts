@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      auth_signin_attempts: {
+        Row: {
+          attempted_at: string
+          email: string
+          id: string
+          ip: string | null
+          locked_until: string | null
+          success: boolean
+        }
+        Insert: {
+          attempted_at?: string
+          email: string
+          id?: string
+          ip?: string | null
+          locked_until?: string | null
+          success?: boolean
+        }
+        Update: {
+          attempted_at?: string
+          email?: string
+          id?: string
+          ip?: string | null
+          locked_until?: string | null
+          success?: boolean
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author: string | null
@@ -810,6 +837,14 @@ export type Database = {
       }
     }
     Functions: {
+      check_signin_lockout: {
+        Args: { _email: string }
+        Returns: {
+          failed_count: number
+          locked: boolean
+          locked_until: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -820,6 +855,10 @@ export type Database = {
       increment_resource_downloads: {
         Args: { _id: string }
         Returns: undefined
+      }
+      record_signin_attempt: {
+        Args: { _email: string; _success: boolean }
+        Returns: string
       }
     }
     Enums: {

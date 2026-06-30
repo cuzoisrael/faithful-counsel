@@ -35,6 +35,9 @@ import IntakeForm from "./pages/IntakeForm";
 import AdminAccess from "./pages/AdminAccess";
 import NotFound from "./pages/NotFound";
 import BookingView from "./pages/BookingView";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import AccountSecurity from "./pages/AccountSecurity";
 import InstallPWA from "@/components/shared/InstallPWA";
 
 const queryClient = new QueryClient();
@@ -57,6 +60,9 @@ const App = () => (
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/account/security" element={<AccountSecurity />} />
               <Route path="/my-bookings" element={<MyBookings />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/resources" element={<Resources />} />

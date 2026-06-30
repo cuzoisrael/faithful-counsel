@@ -72,6 +72,9 @@ const Header = () => {
                   <Link to="/my-bookings" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
                     My Bookings
                   </Link>
+                  <Link to="/account/security" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
+                    Security & 2FA
+                  </Link>
                   <Link to="/admin" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
                     Admin Panel
                   </Link>
