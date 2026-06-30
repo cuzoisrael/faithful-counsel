@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, Link } from "react-router-dom";
-import { Calendar, Clock, User, Mail, Phone, Loader2, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Calendar, Clock, User, Mail, Phone, Loader2, ShieldCheck, AlertTriangle, MessageCircle, CheckCircle2, XCircle } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import SectionHeading from "@/components/shared/SectionHeading";
+
+interface ReminderEntry {
+  id: string;
+  channel: string;
+  status: string;
+  delivery_status: string | null;
+  recipient: string | null;
+  error_message: string | null;
+  provider_response: string | null;
+  delivered_at: string | null;
+  status_updated_at: string | null;
+  created_at: string;
+}
 
 interface Booking {
   id: string;
